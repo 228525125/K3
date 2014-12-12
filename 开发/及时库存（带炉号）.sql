@@ -62,6 +62,8 @@ WHERE 1=1
 AND (a.wldm like '%'+@query+'%' or a.wlmc like '%'+@query+'%' or a.wlgg like '%'+@query+'%' or a.wlph like '%'+@query+'%' or b.lh like '%'+@query+'%' or b.bz like '%'+@query+'%' or c.lh like '%'+@query+'%')
 end
 
+execute list_jskc_lhbz 'Ω”Õ∑'
+
 --count--
 create procedure list_jskc_lhbz_count
 @query varchar(50)

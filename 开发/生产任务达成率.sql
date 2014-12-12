@@ -45,7 +45,7 @@ AND v1.FStatus in (1,3)                     --状态必须是下达或结案
 select scrwzs,scrwasjh,scrwwasjh,convert(decimal(28,2),convert(decimal(28,2),scrwzs-scrwwasjh)/scrwzs*100) as scrwjsl,scrwtx from #Data
 end
 
-execute count_scrwjsl '2013-01-01','2013-01-31'
+execute count_scrwjsl '2014-01-01','2014-12-31'
 
 
 select * from ICMO where FPlanFinishDate>='2011-10-08'

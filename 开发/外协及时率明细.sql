@@ -170,7 +170,7 @@ where 1=1
 AND a.FClassTypeID=1002521
 AND a.FStatus > 0
 --AND b.FFetchDate>=@begindate and b.FFetchDate<=@enddate
-AND b.FFetchDate>='2013-11-01' and b.FFetchDate<='2013-11-30'
+AND b.FFetchDate>='2014-01-01' and b.FFetchDate<='2014-12-31'
 order by a.FBillNo
 
 

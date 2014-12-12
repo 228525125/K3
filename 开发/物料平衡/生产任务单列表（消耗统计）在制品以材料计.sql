@@ -142,7 +142,7 @@ end
 
 
 
-exec list_scrw_wlxh '','2013-01-01','2013-12-31', 1
+exec list_scrw_wlxh '','2014-01-01','2014-09-30', 1
 
 exec list_scrw_wlxh_count '','2013-07-01','2013-07-22',1
 

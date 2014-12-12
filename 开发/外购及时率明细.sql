@@ -227,7 +227,7 @@ group by u1.FOrderInterID,u1.FOrderEntryID
 where 1=1 
 AND v1.FChangeMark=0 AND ( Isnull(v1.FClassTypeID,0)<>1007101) AND v1.FCancellation = 0 and v1.FCheckerID>0
 AND not(u1.FMrpClosed=1 and j.FDate is null and k.FDate is null)
-AND u1.FDate >= '2013-12-01' and u1.FDate <= '2013-12-31'
+AND u1.FDate >= '2014-01-01' and u1.FDate <= '2014-12-31'
 order by v1.FBillNo
 
 select wldw,count(djbh) from #data1 group by wldw

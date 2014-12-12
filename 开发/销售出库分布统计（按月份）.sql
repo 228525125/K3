@@ -1,3 +1,4 @@
+--ÏúÊÛ³ö¿â
 --drop procedure report_xsckfbtj_yf
 
 create procedure report_xsckfbtj_yf
@@ -50,6 +51,12 @@ end
 
 execute report_xsckfbtj_yf '2014-01-01','2014-12-31','','01.001'
 execute report_xsckfbtj_yf '2014-01-01','2014-12-31','','01.144'
+
+
+
+
+
+
 
 
 create table #tempcc(

@@ -299,13 +299,13 @@ select u1.FQty,u1.FConsignPrice,u1.FConsignAmount,u1.* from ICStockBill v1 INNER
 LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
 where 1=1 
 AND (v1.FTranType=21 AND (v1.FCancellation = 0))
-AND v1.FBillNo='XOUT001459' AND i.FNumber='05.04.3010'
+AND v1.FBillNo='XOUT003689' AND i.FNumber='05.07.2032'
 
-update u1 set u1.FConsignPrice=52,u1.FConsignAmount=-6240 from ICStockBill v1 INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+update u1 set u1.FConsignPrice=285,u1.FConsignAmount=-23085 from ICStockBill v1 INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
 LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
 where 1=1 
 AND (v1.FTranType=21 AND (v1.FCancellation = 0))
-AND v1.FBillNo='XOUT001459' AND i.FNumber='05.04.3010'
+AND v1.FBillNo='XOUT003689' AND i.FNumber='05.07.2032'
 
 
 
