@@ -250,6 +250,26 @@ and t4.FNumber in ('01.002','01.144')
 group by t17.FNumber,t17.FName,t17.FModel
 order by 
 
+------------带核销数量、核销金额-----------
+
+Select top 20000 
+case  when v1.FCheckerID>0 then 'Y' when v1.FCheckerID<0 then 'Y' else '' end as '审核',Convert(char(10),v1.Fdate,120) as '日期',v1.FBillNo as '发票号'
+,t4.FNumber as '客户代码',t4.FName as '客户名称',us.FDescription as '业务员',t17.FName as '产品',t17.FModel as '规格',mu.FName as '单位',u1.FAuxQty as '数量'
+,cast(u1.FPrice as decimal(28,2)) as '无税单价',cast(u1.FTaxPrice as decimal(28,2)) as '含税单价',cast(u1.FTaxAmount as decimal(28,2)) as '销项税',cast(u1.FAuxQty*u1.FTaxPrice as decimal(28,2)) as '含税金额',t17.FNumber as '产品代码',cast(u1.FCheckQty as decimal(28,2)) as '核销数量',cast(u1.FCheckAmount as decimal(28,2)) as '核销金额',se.FPriceDiscount as '订单含税单价',(se.FPriceDiscount*u1.FAuxQty) as '订单含税金额'
+,u1.FAllHookQTY as '勾稽数量',u1.FCurrentHookAmount as '本期勾稽金额', u1.FCurrentHookQTY as '本期勾稽数量',u1.FAmount_Commit as '关联金额'
+from ICSale v1 INNER JOIN ICSaleEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+ INNER JOIN t_Organization t4 ON     v1.FCustID = t4.FItemID   AND t4.FItemID <>0 
+ INNER JOIN t_ICItem t17 ON     u1.FItemID = t17.FItemID   AND t17.FItemID <>0 
+ LEFT JOIN t_MeasureUnit mu on mu.FItemID=u1.FUnitID
+ LEFT JOIN t_user us On us.FUserID=v1.FBillerID
+ LEFT JOIN SEOrderEntry se on u1.FOrderInterID=se.FInterID and u1.FOrderEntryID=se.FEntryID
+ where 1=1 
+AND (v1.FTranType=80 AND  v1.FCancellation = 0)
+AND v1.FDate>='2014-10-01' AND  v1.FDate<='2014-10-30'
+AND t17.FNumber like '%%'
+AND t4.FNumber = ''
+order by v1.FBillNo
+
 
 
 

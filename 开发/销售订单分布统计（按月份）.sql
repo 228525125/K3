@@ -1,4 +1,6 @@
 --销售订单
+--drop procedure report_xsddfbtj_yf
+
 create procedure report_xsddfbtj_yf
 @begin nvarchar(255),
 @end nvarchar(255),
@@ -28,6 +30,7 @@ where 1=1
 AND v1.FTranType=81 AND v1.FCancellation = 0 AND v1.FStatus>0
 AND v1.FAreaPS=20302                           --销售范围：购销
 AND i.FErpClsID=2                              --物料属性：自制
+AND v1.FDate>=@begin AND  v1.FDate<=@end
 AND i.FNumber like '%'+@wldm+'%'
 AND o.FNumber like '%'+@wldw+'%'
 group by convert(char(6),v1.FDate,112),i.FNumber,i.FName,i.FModel,i.FHelpCode
@@ -44,8 +47,20 @@ exec(@sql)
 
 end
 
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','01.001'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','01.144'
 
-execute report_xsckfbtj_yf '2014-01-01','2014-12-31','','61.005'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','02.001'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','02.007'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','61.001'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','61.002'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','61.003'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','61.004'
+
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','16.02'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','16.03'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','01.003'
+execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','61.005'
 
 
 

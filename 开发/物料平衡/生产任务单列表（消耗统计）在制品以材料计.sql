@@ -65,7 +65,7 @@ and b.FAuxQtyScrap > 0                              --单位用量必须大于0
 and d.FNumber <> '06.07.0135' and d.FNumber<>'06.07.0045' and d.FNumber<>'06.07.0040'      --不考虑外购称重的半成品
 and a.FCheckDate>=@begindate and a.FCheckDate<=@enddate
 AND (a.FBillNo like '%'+@query+'%' or a.FGMPBatchNo like '%'+@query+'%' 
-or g.FNumber like '%'+@query+'%' or g.FName like '%'+@query+'%' or g.FModel like '%'+@query+'%'
+or g.FNumber like '%'+@query+'%' or g.FName like '%'+@query+'%' or g.FModel like '%'+@query+'%' or g.FHelpCode like '%'+@query+'%'
 or j.FBillNo like '%'+@query+'%')
 order by a.FBillNo,d.FNumber
 
@@ -130,7 +130,7 @@ and b.FAuxQtyScrap > 0                              --单位用量必须大于0
 and d.FNumber <> '06.07.0135' and d.FNumber<>'06.07.0045' and d.FNumber<>'06.07.0040'      --不考虑外购称重的半成品
 and a.FCheckDate>=@begindate and a.FCheckDate<=@enddate
 AND (a.FBillNo like '%'+@query+'%' or a.FGMPBatchNo like '%'+@query+'%'
-or g.FNumber like '%'+@query+'%' or g.FName like '%'+@query+'%' or g.FModel like '%'+@query+'%'
+or g.FNumber like '%'+@query+'%' or g.FName like '%'+@query+'%' or g.FModel like '%'+@query+'%' or g.FHelpCode like '%'+@query+'%'
 or j.FBillNo like '%'+@query+'%')
 order by a.FBillNo,d.FNumber
 
@@ -142,7 +142,7 @@ end
 
 
 
-exec list_scrw_wlxh '','2014-01-01','2014-09-30', 1
+exec list_scrw_wlxh '','2014-07-01','2014-12-31', 1
 
 exec list_scrw_wlxh_count '','2013-07-01','2013-07-22',1
 
