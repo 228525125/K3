@@ -2,9 +2,9 @@ SELECT i.FNumber,u1.FEntrySelfT0241,FBatchNo,u1.FInterID,u1.FEntryID,v1.*,u1.* f
 INNER JOIN POInstockEntry u1 ON   v1.FInterID = u1.FInterID  AND u1.FInterID<>0 
 LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
 where 1=1 
-AND v1.FBillNo='IQCR001825'
+AND v1.FBillNo='IQCR001658'
 --and FBatchNo='14D58'
-and FEntryID in (1)
+and FEntryID in (5)
 --and FBatchNo IN ('13L01','13L05','13L03','13L07','13L02') AND FDate>='2013-09-01' 
 --AND FQty in (90)
 
@@ -12,17 +12,17 @@ and FEntryID in (1)
 13A0911-2220
 
 
-select FEntrySelfT0241,* from POInstockEntry where 1=1 AND FInterID IN (7241) and FEntryID IN (1)
+select FEntrySelfT0241,* from POInstockEntry where 1=1 AND FInterID IN (6717) and FEntryID IN (5)
 
-select FHeadSelft1256,* from ICQCBill v1 where 1=1 and FTranType=711 and FInStockInterID IN (7241) and FSerialID IN (1) 
+select FHeadSelft1256,* from ICQCBill v1 where 1=1 and FTranType=711 and FInStockInterID IN (6717) and FSerialID IN (5) 
 
 select * from ICMO where FGMPBatchNo='13E01' and FCheckDate>='2013-10-01'
 
 --------------¸ÄÂ¯ºÅ----------------
 
---update POInstockEntry set FBatchNo=FEntrySelfT0241/*,FEntrySelfT0241='Q11403'*/ where 1=1 AND FInterID IN (7252) and FEntryID IN (2)
+--update POInstockEntry set /*FBatchNo=FEntrySelfT0241,*/FEntrySelfT0241='Q11403' where 1=1 AND FInterID IN (6717) and FEntryID IN (5)
 
---update ICQCBill set FBatchNo=FHeadSelft1256/*,FHeadSelft1256='Q11403'*/ where 1=1 and FTranType=711 and FInStockInterID IN (7252) and FSerialID IN (2) 
+--update ICQCBill set /*FBatchNo=FHeadSelft1256,*/FHeadSelft1256='Q11403' where 1=1 and FTranType=711 and FInStockInterID IN (6717) and FSerialID IN (5) 
 
 --update ICMO set FGMPBatchNo='Q11306' where FGMPBatchNo='Q1306' and FCheckDate>='2013-10-01'
 

@@ -20,6 +20,7 @@ djbh nvarchar(255) default('')
 ,jhsl decimal(28,0) default(0)
 ,sqsl decimal(28,0) default(0)
 ,hgsl decimal(28,0) default(0)
+,bhgsl decimal(28,4) default(0)        --不合格数量
 ,gfsl decimal(28,4) default(0)         --工废数量
 ,lfsl decimal(28,4) default(0)         --料废数量
 ,rksl decimal(28,0) default(0)
@@ -38,10 +39,10 @@ djbh nvarchar(255) default('')
 ,ddsl decimal(28,4) default(0)
 )
 
-Insert Into #Data(djbh,djzt,djrq,cpdm,cpmc,cpgg,cpph,jhsl,sqsl,hgsl,gfsl,lfsl,rksl,wldm,wlmc,wlgg,dwyl,llsl,bfsl,tlsl,zzpsl,hbsl,jhtlsl,ddbh,jhrq,ddsl
+Insert Into #Data(djbh,djzt,djrq,cpdm,cpmc,cpgg,cpph,jhsl,sqsl,hgsl,bhgsl,gfsl,lfsl,rksl,wldm,wlmc,wlgg,dwyl,llsl,bfsl,tlsl,zzpsl,hbsl,jhtlsl,ddbh,jhrq,ddsl
 )
 SELECT a.FBillNo as 'djbh',case when a.FStatus=0 then '计划' when a.FStatus=5 then '确认' when a.FStatus=1 or a.FStatus=2 then '下达' when a.FStatus=3 then '结案' else '' end as 'djzt'
-,convert(char(10),a.FCheckDate,120) as  'djrq',g.FNumber as 'cpdm',g.FName as 'cpmc',g.FModel as 'cpgg',a.FGMPBatchNo as 'cpph',a.FQty as 'jhsl',ISNULL(c.FQty,0) as 'sqsl',FAuxQtyPass as 'hgsl',a.FQtyScrap as 'gfsl',a.FQtyForItem as 'lfsl',a.FStockQty as 'rksl',d.FNumber as 'wldm',d.FName as 'wlmc',d.FModel as 'wlgg',b.FAuxQtyScrap as 'dwyl',b.FAuxStockQty+ISNULL(-f.FQty,0) as 'llsl',b.FDiscardAuxQty as 'bfsl',case when e.FQty is null then ISNULL(f.FQty,0) else e.FQty end as 'tlsl'
+,convert(char(10),a.FCheckDate,120) as  'djrq',g.FNumber as 'cpdm',g.FName as 'cpmc',g.FModel as 'cpgg',a.FGMPBatchNo as 'cpph',a.FQty as 'jhsl',ISNULL(c.FQty,0) as 'sqsl',FAuxQtyPass as 'hgsl',ISNULL(c.FQty,0)-FAuxQtyPass as 'bhgsl',a.FQtyScrap as 'gfsl',a.FQtyForItem as 'lfsl',a.FStockQty as 'rksl',d.FNumber as 'wldm',d.FName as 'wlmc',d.FModel as 'wlgg',b.FAuxQtyScrap as 'dwyl',b.FAuxStockQty+ISNULL(-f.FQty,0) as 'llsl',b.FDiscardAuxQty as 'bfsl',case when e.FQty is null then ISNULL(f.FQty,0) else e.FQty end as 'tlsl'
 ,(ROUND(b.FAuxStockQty/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) + ROUND(ISNULL(-e.FQty,0)/b.FAuxQtyScrap,0) - case when g.FProChkMde=352 then ISNULL(a.FAuxStockQty,0) else ISNULL(c.FQty,0) end)*b.FAuxQtyScrap as 'zzpsl'
 ,h.hbsl,b.FAuxQtyMust as 'jhtlsl',j.FBillNo as 'ddbh',j.FDate as 'jhrq',j.FQty as 'ddsl'
 FROM ICMO a 
@@ -142,7 +143,7 @@ end
 
 
 
-exec list_scrw_wlxh '','2014-07-01','2014-12-31', 1
+exec list_scrw_wlxh '','2013-01-01','2013-12-31', 1
 
 exec list_scrw_wlxh_count '','2013-07-01','2013-07-22',1
 
@@ -177,7 +178,7 @@ execute list_scrw_wlxh_count '','2013-07-01','2013-07-22',0
 
 select FQtyForItem,FQtyScrap from ICMO where FBillNo='WORK024202-1'
 
-select * from ICMO where FBillNo in ('WORK027487','WORK027486')
+select FAuxQtyPass from ICMO where FBillNo in ('WORK027487','WORK027486')
 
 update ICMO set FHeadSelfJ0187='11D487' where FBillNo in ('WORK024973-3','WORK024973-4')
 

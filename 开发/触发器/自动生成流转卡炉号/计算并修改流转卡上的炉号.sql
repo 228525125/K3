@@ -42,9 +42,9 @@ END
 end
 
 
-execute sclzklh 29993
+execute sclzklh 36181
 
-select FInterID,* from ICMO where FBillNo='WORK028451'
+select FInterID,* from ICMO where FBillNo='WORK034514'
 
 
 
@@ -65,11 +65,11 @@ SELECT ISNULL(b.FEntrySelfT0241,'') FROM POInstock a left join POInstockEntry b 
 
 update pclh set lh='P11606301' where ph='13E04'
 
-SELECT * FROM pclh where ph='13E04'
+SELECT * FROM pclh where ph='Q1403'
 
 
 
 
-
+SELECT ISNULL(b.FEntrySelfT0241,''),a.FBillNo FROM POInstock a left join POInstockEntry b on a.FInterID=b.FInterID left join t_ICItem c on b.FItemID=c.FItemID where a.FTranType=702 and a.FCancellation = 0 and b.FBatchNo='Q1403'
 
 

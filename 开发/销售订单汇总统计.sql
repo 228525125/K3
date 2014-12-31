@@ -166,7 +166,7 @@ select count(*) from #Data
 end
 
 
-execute report_xsddhztj '重庆横河','2011-11-01','2011-11-30',2,'null',''
+execute report_xsddhztj '','2011-11-01','2011-11-30',1,'null',''
 
 execute report_xsddhztj_count '重庆横河','2011-11-01','2011-11-30',2,'null',''
 
