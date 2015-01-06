@@ -5,6 +5,7 @@ create procedure report_xsckhztj
 @begindate varchar(10),
 @enddate varchar(10),
 @huizong int,
+@FHookStatus nvarchar(10),
 @orderby nvarchar(100),
 @ordertype nvarchar(4)
 as 
@@ -60,6 +61,7 @@ AND (v1.FTranType=21 AND (v1.FCancellation = 0))
 AND v1.FDate>=@begindate AND  v1.FDate<=@enddate
 AND (FBillNo like '%'+@query+'%' or t4.FNumber like '%'+@query+'%' or t4.FName like '%'+@query+'%' or us.FDescription like '%'+@query+'%' or i.FName like '%'+@query+'%' 
 or i.FModel like '%'+@query+'%' or u1.FQty like '%'+@query+'%' or i.FNumber like '%'+@query+'%')
+AND v1.FHookStatus like '%'+@FHookStatus+'%'
 order by v1.FBillNo,u1.FItemID
 
 if @huizong=1          -- 汇总依据：客户
@@ -84,6 +86,7 @@ create procedure report_xsckhztj_count
 @begindate varchar(10),
 @enddate varchar(10),
 @huizong int,
+@FHookStatus nvarchar(10),
 @orderby nvarchar(100),
 @ordertype nvarchar(4)
 as 
@@ -139,6 +142,7 @@ AND (v1.FTranType=21 AND (v1.FCancellation = 0))
 AND v1.FDate>=@begindate AND  v1.FDate<=@enddate
 AND (FBillNo like '%'+@query+'%' or t4.FNumber like '%'+@query+'%' or t4.FName like '%'+@query+'%' or us.FDescription like '%'+@query+'%' or i.FName like '%'+@query+'%' 
 or i.FModel like '%'+@query+'%' or u1.FQty like '%'+@query+'%' or i.FNumber like '%'+@query+'%')
+AND v1.FHookStatus like '%'+@FHookStatus+'%'
 order by v1.FBillNo,u1.FItemID
 
 if @huizong=1          -- 汇总依据：客户
@@ -157,7 +161,7 @@ select '合计',sum(fssl),sum(xxs),sum(hsje) from #temp
 select count(*) from #Data
 end
 
-execute report_xsckhztj '金属缠绕','2013-01-01','2013-12-30',2,'null',''
+execute report_xsckhztj '金属缠绕','2013-01-01','2013-12-30',2,'2','null',''
 
 
 execute report_xsckhztj_count '','2011-11-01','2011-11-30',2,'null',''
