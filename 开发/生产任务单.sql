@@ -323,10 +323,10 @@ select FGMPBatchNo,* from ICMO where FBillNo='WORK033920'
 
 
 ----·´½á°¸----
-select FStatus,FCheckerID,FMrpClosed,FHandworkClose,FCloseDate,* from ICMO where FBillNo='WORK034295'
+select FStatus,FCheckerID,FMrpClosed,FHandworkClose,FCloseDate,* from ICMO where FBillNo='WORK032040'
 
 update ICMO set FStatus=1,FCheckerID=null,FMrpClosed=0,FHandworkClose=0,FCloseDate=null
-where FBillNo='WORK033298'
+where FBillNo='WORK032040'
 
 
 

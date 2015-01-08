@@ -70,7 +70,7 @@ order by d.fName,c.FName,c.FModel
 if @huizong=1          -- 汇总依据：客户
 set @sqlstring='Insert Into #Data(wldw,fssl,wsdj,hsdj,xxs,hsje,fhje,wfhje)select wldw,sum(fssl),max(wsdj),max(hsdj),sum(xxs),sum(hsje),sum(fhje),sum(wfhje) from #temp group by wldw'
 else if @huizong=2     -- 汇总依据：客户、品规
-set @sqlstring = 'Insert Into #Data(wldw,cpdm,cpmc,cpgg,cpth,jldw,fssl,wsdj,hsdj,xxs,hsje,fhje,wfhje)select wldw,cpdm,cpmc,cpgg,cpth,jldw,sum(fssl),max(wsdj),max(hsdj),sum(xxs),sum(hsje)sum(fhje),sum(wfhje) from #temp group by wldw,cpdm,cpmc,cpgg,cpth,jldw'
+set @sqlstring = 'Insert Into #Data(wldw,cpdm,cpmc,cpgg,cpth,jldw,fssl,wsdj,hsdj,xxs,hsje,fhje,wfhje)select wldw,cpdm,cpmc,cpgg,cpth,jldw,sum(fssl),max(wsdj),max(hsdj),sum(xxs),sum(hsje),sum(fhje),sum(wfhje) from #temp group by wldw,cpdm,cpmc,cpgg,cpth,jldw'
 
 if @orderby='null'
 exec(@sqlstring)
@@ -93,7 +93,7 @@ and b.FMrpClosed like '%'+@FMrpClosed+'%'
 select * from #Data
 end
 
-select * from SEOrderEntry
+
 
 --------------------count----------------------
 create procedure report_xsddhztj_count 
@@ -165,9 +165,9 @@ set @sqlstring = 'Insert Into #Data(wldw,cpdm,cpmc,cpgg,cpth,jldw,fssl,wsdj,hsdj
 if @orderby='null'
 exec(@sqlstring)
 else
-exec(@sqlstring + ' order by '+ @orderby+' '+ @ordertype)
+exec(@sqlstring + ' order by '+ @orderby+' '+ @ordertype) 
 
-Insert Into  #Data(wldw,fssl,xxs,hsje)
+Insert Into  #Data(wldw,fssl,xxs,hsje) 
 select '合计',sum(b.FQty) as FQty,SUM(b.FTaxAmt) as FTaxAmt,SUM(b.FAllAmount) as FAllAmount from SEOrder a 
 left join (select FBillNo,FItemID,FUnitID,FMrpClosed,sum(FQty) as FQty,min(FPrice) as FPrice,min(FPriceDiscount) as FPriceDiscount,sum(FTaxAmt) as FTaxAmt,sum(FAllAmount) as FAllAmount,max(a.FDate) as FDate,sum(FStockQty*FPriceDiscount) as fhje from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID where a.FCancellation=0 group by FBillNo,FItemID,FUnitID,FMrpClosed) b on a.FBillNo=b.FBillNo 
 left join t_ICItem c on b.FItemID=c.FItemID 
@@ -182,7 +182,7 @@ select count(*) from #Data
 end
 
 
-execute report_xsddhztj '','2011-11-01','2011-11-30',1,'','null',''
+execute report_xsddhztj '61.006','2014-01-01','2014-12-31',2,'','null',''
 
 execute report_xsddhztj_count '重庆横河','2011-11-01','2011-11-30',2,'null',''
 
