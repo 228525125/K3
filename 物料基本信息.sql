@@ -162,9 +162,9 @@ inner join rss.dbo.export_aqkc b on a.FNumber=b.wldm
 select wlmc from rss.dbo.export_aqkc111010 where wldm is null group by wlmc,gg
 
 --修改批次管理属性
-select a.FBatchManager,b.FProChkMde,b.* from t_ICItem a left join t_ICItemQuality b on a.FItemID=b.FItemID where FNumber='05.08.3001'
+select a.FBatchManager,b.FProChkMde,b.* from t_ICItem a left join t_ICItemQuality b on a.FItemID=b.FItemID where FNumber in ('01.01.20.097','01.01.20.103','01.01.20.104')
 
-update t_ICItem set FBatchManager=1 where FNumber='05.08.3001'
+update t_ICItem set FBatchManager=1 where FNumber in ('01.01.20.097','01.01.20.103','01.01.20.104')
 
 select FBatchManager,* from t_ICItem where FNumber='08.03.0005'
 
@@ -299,9 +299,10 @@ and FSOChkMde=353
 
 
 
-select * from t_ICItem a where  1=1
+select FNumber,FName,FModel,FHelpCode from t_ICItem a where  1=1
 and a.FDeleted=0
-AND (left(a.FNumber,3)='05.' or left(a.FNumber,3)='06.' or left(a.FNumber,3)='07.' )
+AND (left(a.FNumber,3)='05.')
+order by a.FNumber
 
 update a set a.FBatchManager=1
 from t_ICItem a where  1=1

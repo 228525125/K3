@@ -21,7 +21,14 @@ update a set a.FText1=b.FHeadSelfJ0184 from ICShop_FlowCard a left join ICMO b o
 
 select FHeadSelfJ0184,* from ICMO where FBillNo='WORK024670'
 
-select * from ICShop_FlowCard
+--修改流转卡合格数量
+
+select b.FAuxQtyPass,b.FAuxQtyPassCoefficient,b.* from ICShop_FlowCard a left join ICShop_FlowCardEntry b on a.FID=b.FID where a.FFlowCardNo in ('FC25799','FC25757') and FIndex=1
+
+update b set b.FAuxQtyPass=5000,b.FAuxQtyPassCoefficient=5000 from ICShop_FlowCard a left join ICShop_FlowCardEntry b on a.FID=b.FID where a.FFlowCardNo='FC25799' and FIndex=1
+
+
+
 
 FFlowCardNo
 

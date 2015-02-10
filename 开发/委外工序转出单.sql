@@ -247,6 +247,19 @@ where v1.FBillNo like '%WWZC003911%'
 
 
 
-select * FROM  ICShop_SubcOut v1 
+select * FROM ICShop_SubcOut v1 
 INNER JOIN ICShop_SubcOutEntry u1 ON v1.FInterID=u1.FInterID
-where 
+where v1.FBillNo='WWZC004358'
+
+update u1 set u1.FFetchDate='2015-01-16',u1.FFactTranOutDate='2015-01-16' 
+FROM ICShop_SubcOut v1 
+INNER JOIN ICShop_SubcOutEntry u1 ON v1.FInterID=u1.FInterID
+where v1.FBillNo='WWZC004358'
+
+
+FROM  ICShop_SubcOut v1 
+INNER JOIN ICShop_SubcOutEntry u1 ON v1.FInterID=u1.FInterID
+
+
+
+

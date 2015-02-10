@@ -294,18 +294,18 @@ select u1.FSourceInterId,FSourceEntryId from ICStockBill v1 INNER JOIN ICStockBi
 where v1.FDate='2014-12-02'
 
 
------------2014-11-12---------
+-----------2014-11-12 ÐÞ¸Äµ¥¼Û---------
 select u1.FQty,u1.FConsignPrice,u1.FConsignAmount,u1.* from ICStockBill v1 INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
 LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
 where 1=1 
 AND (v1.FTranType=21 AND (v1.FCancellation = 0))
-AND v1.FBillNo='XOUT003689' AND i.FNumber='05.07.2032'
+AND v1.FBillNo='XOUT003106' AND i.FNumber='05.01.0013'
 
-update u1 set u1.FConsignPrice=285,u1.FConsignAmount=-23085 from ICStockBill v1 INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+update u1 set u1.FConsignPrice=0,u1.FConsignAmount=0 from ICStockBill v1 INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
 LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
 where 1=1 
 AND (v1.FTranType=21 AND (v1.FCancellation = 0))
-AND v1.FBillNo='XOUT003689' AND i.FNumber='05.07.2032'
+AND v1.FBillNo='XOUT003106' AND i.FNumber='05.01.0013'
 
 
 

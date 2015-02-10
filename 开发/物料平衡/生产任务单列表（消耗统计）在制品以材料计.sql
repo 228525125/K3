@@ -186,3 +186,4 @@ select * from rss.dbo.pclh where ph='13e39'
 
 
 
+select * from PPBOM a left join PPBOMEntry b on a.FInterID=b.FInterID where a.FBillNo='PBOM036838'

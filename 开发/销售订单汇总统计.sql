@@ -1,3 +1,4 @@
+--过滤掉 手工关闭的部分，即行业务关闭并且未做发货通知的
 --drop procedure report_xsddhztj drop procedure report_xsddhztj_count
 
 create procedure report_xsddhztj 
@@ -56,7 +57,7 @@ b.FAllAmount as 'hsje',
 b.fhje as 'fhje',
 b.FAllAmount - b.fhje as 'wfhje'
 from SEOrder a 
-left join (select FBillNo,FItemID,FUnitID,FMrpClosed,sum(FQty) as FQty,min(FPrice) as FPrice,min(FPriceDiscount) as FPriceDiscount,sum(FTaxAmt) as FTaxAmt,sum(FAllAmount) as FAllAmount,max(a.FDate) as FDate,sum(FStockQty*FPriceDiscount) as fhje from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID where a.FCancellation=0 group by FBillNo,FItemID,FUnitID,FMrpClosed) b on a.FBillNo=b.FBillNo 
+left join (select FBillNo,FItemID,FUnitID,FMrpClosed,sum(FQty) as FQty,min(FPrice) as FPrice,min(FPriceDiscount) as FPriceDiscount,sum(FTaxAmt) as FTaxAmt,sum(FAllAmount) as FAllAmount,max(a.FDate) as FDate,sum(FStockQty*FPriceDiscount) as fhje from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID where a.FCancellation=0 and not(b.FAuxCommitQty=0 and b.FMrpClosed=1) group by FBillNo,FItemID,FUnitID,FMrpClosed) b on a.FBillNo=b.FBillNo 
 left join t_ICItem c on b.FItemID=c.FItemID 
 left join t_Organization d on a.FCustID=d.FItemID 
 left join t_MeasureUnit e on e.FItemID=b.FUnitID 
@@ -80,7 +81,7 @@ exec(@sqlstring + ' order by '+ @orderby+' '+ @ordertype)
 Insert Into  #Data(wldw,fssl,xxs,hsje)
 select '合计',sum(b.FQty) as FQty,SUM(b.FTaxAmt) as FTaxAmt,SUM(b.FAllAmount) as FAllAmount
 from SEOrder a 
-left join (select FBillNo,FItemID,FUnitID,FMrpClosed,sum(FQty) as FQty,min(FPrice) as FPrice,min(FPriceDiscount) as FPriceDiscount,sum(FTaxAmt) as FTaxAmt,sum(FAllAmount) as FAllAmount,max(a.FDate) as FDate,sum(FStockQty*FPriceDiscount) as fhje from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID where a.FCancellation=0 group by FBillNo,FItemID,FUnitID,FMrpClosed) b on a.FBillNo=b.FBillNo 
+left join (select FBillNo,FItemID,FUnitID,FMrpClosed,sum(FQty) as FQty,min(FPrice) as FPrice,min(FPriceDiscount) as FPriceDiscount,sum(FTaxAmt) as FTaxAmt,sum(FAllAmount) as FAllAmount,max(a.FDate) as FDate,sum(FStockQty*FPriceDiscount) as fhje from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID where a.FCancellation=0 and not(b.FAuxCommitQty=0 and b.FMrpClosed=1) group by FBillNo,FItemID,FUnitID,FMrpClosed) b on a.FBillNo=b.FBillNo
 left join t_ICItem c on b.FItemID=c.FItemID 
 left join t_Organization d on a.FCustID=d.FItemID 
 left join t_MeasureUnit e on e.FItemID=b.FUnitID 
@@ -194,4 +195,24 @@ and FStatus=1        --0：保存；1：审核状态；3：关闭状态*/
 
 
 113554.00	1965.81	2300.00	253120.33	1742064.11
+
+
+
+
+
+select FBillNo,FItemID,FUnitID,b.FMrpClosed,sum(FQty) as FQty,min(FPrice) as FPrice,min(FPriceDiscount) as FPriceDiscount,sum(FTaxAmt) as FTaxAmt,sum(FAllAmount) as FAllAmount,max(a.FDate) as FDate,sum(FStockQty*FPriceDiscount) as fhje 
+from SEOrder a 
+left join SEOrderEntry b on a.FInterID=b.FInterID 
+where a.FCancellation=0 
+and not(b.FAuxCommitQty=0 and b.FMrpClosed=1)
+and a.FDate>='2015-01-01'
+and a.FBillNo='SEORD008539'
+group by FBillNo,FItemID,FUnitID,FMrpClosed
+
+
+select b.FAuxCommitQty,b.* from SEOrder a 
+left join SEOrderEntry b on a.FInterID=b.FInterID 
+where a.FBillNo in ('SEORD008598','SEORD008596') and a.FCancellation=0
+
+
 
