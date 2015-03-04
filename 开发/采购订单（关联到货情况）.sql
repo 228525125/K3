@@ -44,7 +44,7 @@ select p2.FItemID from POOrder p1 left join POOrderEntry p2 on p1.FInterID=p2.FI
 ) c on u1.FItemID=c.FItemID
 where 1=1 
 AND v1.FChangeMark=0 AND ( Isnull(v1.FClassTypeID,0)<>1007101) AND v1.FCancellation = 0
-AND v1.FCheckDate>=@begindate AND  v1.FCheckDate<=@enddate
+AND convert(char(10),u1.FDate,120)>=@begindate AND  convert(char(10),u1.FDate,120)<=@enddate
 AND (v1.FBillNo like '%'+@query+'%' or i.FNumber like '%'+@query+'%' or i.FName like '%'+@query+'%'
 or u1.FSourceBillNo like '%'+@query+'%' or i.FModel like '%'+@query+'%' or us.FDescription like '%'+@query+'%')
 end

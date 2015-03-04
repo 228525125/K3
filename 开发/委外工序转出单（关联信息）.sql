@@ -22,7 +22,7 @@ LEFT JOIN (select FFlowCardInterID,FFlowCardEntryID,min(FBillDate) as FDate FROM
 LEFT JOIN (select FFlowCardInterID,FFlowCardEntryID,min(FDate) as FDate FROM ICQCBill v1 where 1=1 AND (v1.FTranType=715 AND v1.FCancellation = 0) group by FFlowCardInterID,FFlowCardEntryID) z on u1.FFlowCardInterID=z.FFlowCardInterID and u1.FFlowCardEntryID=z.FFlowCardEntryID
 LEFT JOIN (select u1.FItemID FROM  ICShop_SubcOut v1 INNER JOIN ICShop_SubcOutEntry u1 ON v1.FInterID=u1.FInterID where v1.FBillDate<'2015-01-01' group by FItemID) x on x.FItemID=u1.FItemID
 where 1=1 
-AND v1.FBillDate>=@begindate AND  v1.FBillDate<=@enddate
+AND convert(char(10),u1.FFetchDate,120)>=@begindate AND  convert(char(10),u1.FFetchDate,120)<=@enddate
 AND (v1.FBillNo like '%'+@query+'%' or i.FNumber like '%'+@query+'%' or i.FName like '%'+@query+'%' or u1.FICMOBillNo like '%'+@query+'%' or u1.FOrderBillNo like '%'+@query+'%'
 or i.FModel like '%'+@query+'%' or u1.FBatchNo like '%'+@query+'%')
 end
@@ -32,3 +32,11 @@ end
 
 
 exec table_wwzc '','2015-01-01','2015-01-31'
+
+
+
+select u1.FFetchDate,* FROM  ICShop_SubcOut v1 
+INNER JOIN ICShop_SubcOutEntry u1 ON v1.FInterID=u1.FInterID
+where 1=1
+AND u1.FFetchDate>='2015-01-01' AND  convert(char(10),u1.FFetchDate,120)<='2015-01-31'
+and v1.FBillNo='WWZC004405'
