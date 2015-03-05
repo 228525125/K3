@@ -70,7 +70,7 @@ and b.FAuxQtyScrap > 0                              --单位用量必须大于0
 --and a.FStatus in (1,2)        --下达状态
 --and (left(d.FNumber,5)='07.05' or left(d.FNumber,5)='07.09')
 and d.FNumber <> '06.07.0135' and d.FNumber<>'06.07.0045' and d.FNumber<>'06.07.0040'      --不考虑外购称重的半成品
-and a.FCheckDate>=@begindate and a.FCheckDate<=@enddate
+and a.FPlanFinishDate>=@begindate and a.FPlanFinishDate<=@enddate
 AND (a.FBillNo like '%'+@query+'%' or a.FGMPBatchNo like '%'+@query+'%' 
 or g.FNumber like '%'+@query+'%' or g.FName like '%'+@query+'%' or g.FModel like '%'+@query+'%' or g.FHelpCode like '%'+@query+'%'
 or j.FBillNo like '%'+@query+'%')
