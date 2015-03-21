@@ -42,8 +42,8 @@ djbh nvarchar(255) default('')
 Insert Into #Data(djbh,djzt,djrq,cpdm,cpmc,cpgg,cpph,jhsl,sqsl,hgsl,bhgsl,gfsl,lfsl,rksl,wldm,wlmc,wlgg,dwyl,llsl,bfsl,tlsl,zzpsl,hbsl,jhtlsl,ddbh,jhrq,ddsl
 )
 SELECT a.FBillNo as 'djbh',case when a.FStatus=0 then '计划' when a.FStatus=5 then '确认' when a.FStatus=1 or a.FStatus=2 then '下达' when a.FStatus=3 then '结案' else '' end as 'djzt'
-,convert(char(10),a.FCheckDate,120) as  'djrq',g.FNumber as 'cpdm',g.FName as 'cpmc',g.FModel as 'cpgg',a.FGMPBatchNo as 'cpph',a.FQty as 'jhsl',ISNULL(c.FQty,0) as 'sqsl',FAuxQtyPass as 'hgsl',ISNULL(c.FQty,0)-FAuxQtyPass as 'bhgsl',a.FQtyScrap as 'gfsl',a.FQtyForItem as 'lfsl',a.FStockQty as 'rksl',d.FNumber as 'wldm',d.FName as 'wlmc',d.FModel as 'wlgg',b.FAuxQtyScrap as 'dwyl',b.FAuxStockQty+ISNULL(-k.FQty,0)+ISNULL(-f.FQty,0) as 'llsl',b.FDiscardAuxQty as 'bfsl',ISNULL(f.FQty,0) as 'tlsl'
-,(ROUND((b.FAuxStockQty+ISNULL(-k.FQty,0))/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) - case when g.FProChkMde=352 then ISNULL(a.FAuxStockQty,0) else ISNULL(c.FQty,0) end)*b.FAuxQtyScrap as 'zzpsl'
+,convert(char(10),a.FCheckDate,120) as  'djrq',g.FNumber as 'cpdm',g.FName as 'cpmc',g.FModel as 'cpgg',a.FGMPBatchNo as 'cpph',a.FQty as 'jhsl',ISNULL(c.FQty,0) as 'sqsl',FAuxQtyPass as 'hgsl',ISNULL(c.FQty,0)-FAuxQtyPass as 'bhgsl',a.FQtyScrap as 'gfsl',a.FQtyForItem as 'lfsl',a.FStockQty as 'rksl',d.FNumber as 'wldm',d.FName as 'wlmc',d.FModel as 'wlgg',b.FAuxQtyScrap as 'dwyl',b.FAuxStockQty+ISNULL(-k.FQty,0)+ISNULL(-l.FQty,0) as 'llsl',b.FDiscardAuxQty as 'bfsl',ISNULL(f.FQty,0) as 'tlsl'
+,(ROUND((b.FAuxStockQty+ISNULL(-k.FQty,0)+ISNULL(-l.FQty,0))/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) - case when g.FProChkMde=352 then ISNULL(a.FAuxStockQty,0) else ISNULL(c.FQty,0) end)*b.FAuxQtyScrap as 'zzpsl'
 ,h.hbsl,b.FAuxQtyMust as 'jhtlsl',j.FBillNo as 'ddbh',convert(char(10),j.FDate,120) as 'jhrq',j.FQty as 'ddsl'
 FROM ICMO a 
 INNER JOIN PPBOMEntry b on b.FICMOInterID=a.FInterID 
@@ -51,6 +51,7 @@ LEFT JOIN (SELECT a.FICMOInterID,sum(b.FQty) as FQty FROM QMICMOCKRequest a INNE
 LEFT JOIN t_ICItem d on b.FItemID=d.FItemID
 LEFT JOIN (select b.FICMOInterID,MAX(a.FDate) as FDate from ICStockBill a inner join ICStockBillEntry b on a.FInterID=b.FInterID where a.FTranType=2 AND a.FCancellation = 0 AND a.FStatus = 1 group by b.FICMOInterID) e on e.FICMOInterID=a.FInterID
 LEFT JOIN (select b.FICMOInterID,b.FPPBomEntryID,sum(b.FQty) as FQty from ICStockBill a inner join ICStockBillEntry b on a.FInterID=b.FInterID where a.FTranType=24 AND a.FCancellation = 0 AND a.FStatus = 1 AND a.FROB=-1 and b.FSCStockID<>5272 group by b.FICMOInterID,b.FPPBomEntryID) f on f.FICMOInterID=a.FInterID and b.FEntryID=f.FPPBomEntryID
+LEFT JOIN (select b.FICMOInterID,b.FPPBomEntryID,sum(b.FQty) as FQty from ICStockBill a inner join ICStockBillEntry b on a.FInterID=b.FInterID where a.FTranType=24 AND a.FCancellation = 0 AND a.FStatus = 1 AND a.FROB=-1 and a.FDate>='2015-02-01' and b.FSCStockID=5272 group by b.FICMOInterID,b.FPPBomEntryID) l on l.FICMOInterID=a.FInterID and b.FEntryID=l.FPPBomEntryID
 LEFT JOIN (select b.FICMOInterID,b.FPPBomEntryID,sum(b.FQty) as FQty from ICSTJGBill a inner join ICSTJGBillEntry b on a.FInterID=b.FInterID where a.FTranType=137 AND a.FCancellation = 0 AND a.FStatus=1 AND a.FROB=-1 and b.FSCStockID=5766 group by b.FICMOInterID,b.FPPBomEntryID) k on k.FICMOInterID=a.FInterID and b.FEntryID=k.FPPBomEntryID
 LEFT JOIN t_ICItem g on g.FItemID=a.FItemID 
 LEFT JOIN (select djbh,sum(hgsl) as hbsl from rss.dbo.scrw_gxhb group by djbh) h on h.djbh=a.FBillNo
@@ -61,7 +62,7 @@ and left(d.FNumber,3)<>'08.'                        --不考虑包装材料
 and b.FAuxQtyScrap > 0                              --单位用量必须大于0
 --and b.FUnitID in (179,181,183,185,187,189,214,227,334,338,5947)           --计量单位没有小数点的
 --and (b.FAuxStockQty/b.FAuxQtyScrap) - (b.FDiscardAuxQty/b.FAuxQtyScrap) + ISNULL(-e.FQty,0) * 0.9 < a.FStockQty    --已领 - 报废 = 入库
---and b.FAuxStockQty+ISNULL(-f.FQty,0)>=FAuxQtyPick                 --全部领料；已领+退料 >= 应发
+--and b.FAuxStockQty+ISNULL(-k.FQty,0)+ISNULL(-f.FQty,0)>=FAuxQtyPick                 --全部领料；已领+退料 >= 应发
 --and a.FStatus in (1,2)        --下达状态
 --and (left(d.FNumber,5)='07.05' or left(d.FNumber,5)='07.09')
 and d.FNumber <> '06.07.0135' and d.FNumber<>'06.07.0045' and d.FNumber<>'06.07.0040'      --不考虑外购称重的半成品

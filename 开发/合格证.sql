@@ -36,7 +36,8 @@ select a.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,a.FBatchNo,u.UName,Conve
 
 
 
-ALTER TABLE coc1 ADD fangbao nvarchar(10)
+ALTER TABLE coc1 ADD caizhi nvarchar(50)
 
 select * from coc1
+
 

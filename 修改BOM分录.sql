@@ -28,3 +28,14 @@ select a.* from ICBOM a left join ICBOMCHILD b on a.FInterID=b.FInterID left joi
 
 select * from t_ICItem where FItemID=5121
 
+
+
+----------µ¼³öBOM-----------
+select c.FNumber,c.FName,c.FModel,c.FHelpCode,a.FBOMNumber,d.FNumber,d.FName,d.FModel,d.FHelpCode,mu.FName,b.FQty 
+from ICBOM a 
+left join ICBOMCHILD b on a.FInterID=b.FInterID
+left join t_ICItem c on a.FItemID=c.FItemID
+left join t_ICItem d on b.FItemID=d.FItemID
+LEFT JOIN t_MeasureUnit mu on mu.FItemID=b.FUnitID
+where c.FName like '%·§×é%' 
+order by c.FNumber,a.FBOMNumber,d.FNumber

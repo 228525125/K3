@@ -56,7 +56,7 @@ select FSOChkMde,* from t_ICItemQuality where FSOChkMde=353
 
 update t_ICItemQuality set FSOChkMde=352 where FSOChkMde=353
 
-select a.FNumber as '物料长代码',a.FName as '名称',a.FModel as '规格',a.FHelpCode as '图号',e.*
+select a.FNumber as '物料长代码',a.FName as '名称',a.FModel as '规格',a.FHelpCode as '图号',a.FInspectionLevel,e.*
 from t_ICItem a 
 left join t_ICItemBase b on a.FItemID=b.FItemID 
 left join t_Stock c on b.FDefaultLoc=c.FItemID 
@@ -64,11 +64,14 @@ left join t_ICItemPlan d on a.FItemID=d.FItemID
 left join t_ICItemQuality e on a.FItemID=e.FItemID 
 LEFT JOIN t_MeasureUnit m on m.FItemID=a.FUnitID 
 where 1=1
-and left(a.FNumber,3)='05.'
+--and left(a.FNumber,3)='05.'
 and a.FDeleted=0
+and  a.FNumber in ('01.01.01.001')
 order by a.FHelpCode
 
 PA9002JE（M2801AH-1）
+
+--FInspectionLevel=353     采购检验方式 抽检
 
 select FSecInv,FHighLimit,FQtyMin,* from t_ICItem where left(FNumber,5)='02.03'
 

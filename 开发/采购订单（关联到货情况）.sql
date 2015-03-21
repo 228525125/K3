@@ -10,7 +10,9 @@ SET NOCOUNT ON
 select 
 case when v1.FCheckerID>0 then 'Y' when v1.FCheckerID<0 then 'Y' else '' 
 end  as FCheck,CASE WHEN v1.FStatus = 3 OR v1.FClosed = 1 THEN 'Y' ELSE '' END as FCloseStatus,
-case when u1.FMrpClosed = 1 then 'Y' ELSE '' END as 'hywgb',v1.FInterID,v1.FBillNo,case when v1.FCancellation=1 then 'Y' else '' end as 
+case when u1.FMrpClosed = 1 then 'Y' ELSE '' END as 'hywgb',
+case when i.FInspectionLevel=353 then '³é¼ì' else 'Ãâ¼ì' end as cjfs,
+v1.FInterID,v1.FBillNo,case when v1.FCancellation=1 then 'Y' else '' end as 
 FCancellation,u1.FSourceBillNo,u1.FSourceInterID,FSourceEntryID,u1.FEntryID,convert(char(10),v1.FDate,120) as FDate,i.FNumber as 'cpdm',i.FName as 'cpmc',i.FModel as 'cpgg',mu.FName as 'jldw',
 u1.FQty as 'fssl',u1.FPriceDiscount as 'hsdj',u1.FAllAmount as 'hsje',convert(char(10),u1.FDate,120) as 'jhrq',us.FDescription as 'ywy',s.FName as 'gys',
 case when a.FDate is null then b.FDate ELSE a.FDate END as 'dhrq',

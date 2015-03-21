@@ -177,10 +177,10 @@ AND v1.FStatus like '%'+@status+'%'
 select count(*) from #Data 
 end
 
-execute list_wgrk '29301','2011-02-01','2012-02-28','','null','null'
+execute list_wgrk '','2014-02-01','2014-02-28','','null','null'
 
 SELECT * from ICStockBill v1 left join ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
- where cast(u1.FSourceInterID as nvarchar(10))+cast(u1.FSourceEntryID as nvarchar(10)) = '29301' AND v1.FTranType=1 AND v1.FROB=1 AND  v1.FCancellation = 0
+where cast(u1.FSourceInterID as nvarchar(10))+cast(u1.FSourceEntryID as nvarchar(10)) = '29301' AND v1.FTranType=1 AND v1.FROB=1 AND  v1.FCancellation = 0
 
 select * from POInstock where FBillNo='IQCR000606'
 
@@ -224,16 +224,47 @@ from ICStockBill v1
 INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
 
 
-
-
-Select i.FNumber,i.FName,i.FModel,i.FHelpCode
-from ICStockBill v1 
-INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
-INNER JOIN t_ICItem i ON     u1.FItemID = i.FItemID AND i.FItemID <>0 
-LEFT JOIN t_MeasureUnit mu on mu.FItemID=u1.FUnitID 
-LEFT join t_Supplier s on v1.FSupplyID=s.FItemID
+select i.FNumber,i.FName,i.FModel,i.FHelpCode,
+case when wg.FName is null then st.FName else wg.FName end as 'gys',
+wg.type,st.type
+from t_ICItem i 
+LEFT JOIN t_MeasureUnit mu on mu.FItemID=i.FUnitID 
+LEFT JOIN (
+	Select s.FName,u1.FItemID,u1.FBatchNo,v1.FDate,u1.FQty, 'Õ‚π∫' as type 
+	from ICStockBill v1 
+	INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0  
+	LEFT join t_Supplier s on v1.FSupplyID=s.FItemID 
+	where 1=1 
+	AND v1.FTranType=1 AND  v1.FCancellation = 0 
+	AND v1.FDate>='2015-01-01' AND  v1.FDate<='2015-01-31' 
+	AND v1.FStatus=1 
+	--group by s.FName,u1.FItemID,u1.FBatchNo 
+) wg on wg.FItemID = i.FItemID 
+LEFT JOIN (
+	select s.FName,u1.FItemID,u1.FBatchNo,v1.FDate,u1.FQty,' ‹Õ–' as type
+	from ICSTJGBill v1 
+	INNER JOIN ICSTJGBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+	LEFT join t_Organization s on v1.FCustID=s.FItemID
+	WHERE 1=1
+	AND v1.FTranType=92 AND v1.FROB=1 AND  v1.FCancellation = 0 
+	AND v1.FDate>='2015-01-01' AND v1.FDate<='2015-01-31' 
+	AND v1.FStatus=1 
+	--group by s.FName,u1.FItemID,u1.FBatchNo	
+) st on st.FItemID=i.FItemID 
 where 1=1 
-AND v1.FTranType=1 AND  v1.FCancellation = 0 
-AND s.FNumber='01.129'
-group by i.FNumber,i.FName,i.FModel,i.FHelpCode
+and (wg.FName is not null or st.FName is not null) 
+group by wg.FName,st.FName,wg.type,st.type,i.FNumber,i.FName,i.FModel,i.FHelpCode 
 
+
+
+
+
+
+
+select * from ICSTJGBill
+
+
+case when wg.FName is null then st.FName else wg.FName end as 'gys',
+case when wg.FName is null then st.FBatchNo else wg.FBatchNo end as 'wlph',
+case when wg.FName is null then st.FDate else wg.FDate end as 'djrq',
+case when wg.FName is null then st.FQty else wg.FQty end as 'fssl'
