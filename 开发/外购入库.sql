@@ -264,7 +264,4 @@ group by wg.FName,st.FName,wg.type,st.type,i.FNumber,i.FName,i.FModel,i.FHelpCod
 select * from ICSTJGBill
 
 
-case when wg.FName is null then st.FName else wg.FName end as 'gys',
-case when wg.FName is null then st.FBatchNo else wg.FBatchNo end as 'wlph',
-case when wg.FName is null then st.FDate else wg.FDate end as 'djrq',
-case when wg.FName is null then st.FQty else wg.FQty end as 'fssl'
+

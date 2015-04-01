@@ -6,7 +6,8 @@ create procedure list_scrw_wlxh_querySub
 @querySub varchar(50),
 @begindate varchar(10),
 @enddate varchar(10),
-@style int
+@status varchar(10),
+@style varchar(10)
 as
 begin
 SET NOCOUNT ON
@@ -47,7 +48,7 @@ djbh nvarchar(255) default('')
 Insert Into #Data(djbh,djzt,djrq,cpdm,cpmc,cpgg,cpph,jhsl,sqsl,hgsl,bhgsl,gfsl,lfsl,rksl,rkrq,wldm,wlmc,wlgg,dwyl,llsl,bfsl,tlsl,zzpsl,hbsl,jhtlsl,ddbh,jhrq,ddsl,jhwgrq,jarq,bz
 )
 SELECT a.FBillNo as 'djbh',case when a.FStatus=0 then '计划' when a.FStatus=5 then '确认' when a.FStatus=1 or a.FStatus=2 then '下达' when a.FStatus=3 then '结案' else '' end as 'djzt'
-,convert(char(10),a.FCheckDate,120) as  'djrq',g.FNumber as 'cpdm',g.FName as 'cpmc',g.FModel as 'cpgg',a.FGMPBatchNo as 'cpph',a.FQty as 'jhsl',ISNULL(c.FQty,0) as 'sqsl',FAuxQtyPass as 'hgsl',ISNULL(c.FQty,0)-FAuxQtyPass as 'bhgsl',a.FQtyScrap as 'gfsl',a.FQtyForItem as 'lfsl',a.FStockQty as 'rksl',convert(char(10),e.FDate,120) as 'rkrq',d.FNumber as 'wldm',d.FName as 'wlmc',d.FModel as 'wlgg',b.FAuxQtyScrap as 'dwyl',b.FAuxStockQty+ISNULL(-k.FQty,0)+ISNULL(-l.FQty,0) as 'llsl',b.FDiscardAuxQty as 'bfsl',ISNULL(f.FQty,0) as 'tlsl'
+,convert(char(10),a.FCheckDate,120) as  'djrq',g.FNumber as 'cpdm',g.FName as 'cpmc',g.FModel as 'cpgg',a.FGMPBatchNo as 'cpph',a.FQty as 'jhsl',ISNULL(c.FQty,0) as 'sqsl',FAuxQtyPass as 'hgsl',ISNULL(c.FQty,0)-FAuxQtyPass as 'bhgsl',a.FQtyScrap as 'gfsl',a.FQtyForItem as 'lfsl',a.FStockQty as 'rksl',convert(char(10),e.FDate,120) as 'rkrq',d.FNumber as 'wldm',d.FName as 'wlmc',d.FModel as 'wlgg',b.FAuxQtyScrap as 'dwyl',b.FAuxStockQty+ISNULL(-k.FQty,0)+ISNULL(-l.FQty,0)+ISNULL(-f.FQty,0) as 'llsl',b.FDiscardAuxQty as 'bfsl',ISNULL(f.FQty,0) as 'tlsl'
 ,(ROUND((b.FAuxStockQty+ISNULL(-k.FQty,0)+ISNULL(-l.FQty,0))/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) - case when g.FProChkMde=352 then ISNULL(a.FAuxStockQty,0) else ISNULL(c.FQty,0) end)*b.FAuxQtyScrap as 'zzpsl'
 ,h.hbsl,b.FAuxQtyMust as 'jhtlsl',j.FBillNo as 'ddbh',convert(char(10),j.FDate,120) as 'jhrq',j.FQty as 'ddsl',convert(char(10),a.FPlanFinishDate,120) as 'jhwgrq',convert(char(10),a.FCloseDate,120) as 'jarq',a.FNote as 'bz'
 FROM ICMO a 
@@ -78,12 +79,14 @@ or j.FBillNo like '%'+@query+'%')
 AND (d.FNumber like '%'+@querySub+'%' or d.FName like '%'+@querySub+'%' or d.FModel like '%'+@querySub+'%' or d.FHelpCode like '%'+@querySub+'%')
 order by a.FBillNo,d.FNumber
 
-if @style = 0 
-select * from #Data
+if @style = '是' 
+select djbh,djzt,djrq,cpdm,cpmc,cpgg,cpph,jhsl,sqsl,hgsl,bhgsl,gfsl,lfsl,rksl,rkrq,'' as 'wldm','' as 'wlmc','' as 'wlgg','' as 'dwyl','' as 'llsl','' as 'bfsl','' as 'tlsl','' as 'zzpsl','' as 'hbsl','' as 'jhtlsl',ddbh,jhrq,ddsl,jhwgrq,jarq,bz from #Data where zzpsl<>0 and djzt like '%'+@status+'%' group by djbh,djzt,djrq,cpdm,cpmc,cpgg,cpph,jhsl,sqsl,hgsl,bhgsl,gfsl,lfsl,rksl,rkrq,ddbh,jhrq,ddsl,jhwgrq,jarq,bz
 else
-select * from #Data where zzpsl<>0
+select * from #Data where djzt like '%'+@status+'%'
 end
 
+
+exec list_scrw_wlxh_querySub '','','2015-03-01','2015-03-10','',''
 
 
 

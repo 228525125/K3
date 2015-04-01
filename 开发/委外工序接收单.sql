@@ -228,13 +228,24 @@ where
 
 
 
+select u1.FPassQty,u1.FBasePassQty,u1.FOperPassQty,FEntryID,* FROM  ICShop_SubcIn v1 
+INNER JOIN ICShop_SubcInEntry u1 ON v1.FInterID=u1.FInterID
+where v1.FBillNo in ('WWJS004722')
+and FEntryID=11047
+
+--修改合格数量
+
+update u1 set u1.FPassQty=64,u1.FBasePassQty=64,u1.FOperPassQty=64 FROM  ICShop_SubcIn v1 
+INNER JOIN ICShop_SubcInEntry u1 ON v1.FInterID=u1.FInterID
+where v1.FBillNo in ('WWJS004722')
+and FEntryID=11047
 
 
 
 select * FROM  ICShop_SubcIn v1 
 INNER JOIN ICShop_SubcInEntry u1 ON v1.FInterID=u1.FInterID
-where v1.FBillNo='WWJS004100'
-and FEntryID=8450
+where v1.FBillNo in ('WWJS004835')
+and FEntryID=11373
 
 update u1 set u1.FPassQty=504,u1.FBasePassQty=504,u1.FOperPassQty=504,u1.FInvoiceRelQty=504,u1.FInvoiceRelBaseQty=504,FAllHookQTY=504 FROM  ICShop_SubcIn v1 
 INNER JOIN ICShop_SubcInEntry u1 ON v1.FInterID=u1.FInterID

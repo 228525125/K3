@@ -200,7 +200,7 @@ begin
 end
 end
 
-select * from ICSTJGBill where FBillNo='STJGIN000009'
+select * from ICSTJGBill where FBillNo='STJGOUT001637'
 
 execute check_stjgrk 1017,16442
 

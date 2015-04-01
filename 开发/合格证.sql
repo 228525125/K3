@@ -36,8 +36,8 @@ select a.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,a.FBatchNo,u.UName,Conve
 
 
 
-ALTER TABLE coc1 ADD caizhi nvarchar(50)
+ALTER TABLE coc1 ADD wlth nvarchar(255)
 
-select * from coc1
+select * from coc1 where Convert(char(10),djrq,120)>='2015-04-01' order by djrq desc
 
 

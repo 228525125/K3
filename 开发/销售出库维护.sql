@@ -30,6 +30,7 @@ FOrderID nvarchar(20) default('')
 ,note nvarchar(255) default('')
 ,hsdj decimal(28,2) default(0)          
 ,lh nvarchar(255) default('')
+,khddh nvarchar(255) default('')
 )
 
 create table #Data(
@@ -52,15 +53,16 @@ FOrderID nvarchar(20) default('')
 ,note nvarchar(255) default('')
 ,hsdj decimal(28,2) default(0)          
 ,lh nvarchar(255) default('')
+,khddh nvarchar(255) default('')
 )
 
-Insert Into #temp(FOrderID,Fdate,FCheck,FCancellation,FBillNo,FHookStatus,FStatus,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,cpph,note,hsdj,lh
+Insert Into #temp(FOrderID,Fdate,FCheck,FCancellation,FBillNo,FHookStatus,FStatus,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,cpph,note,hsdj,lh,khddh
 )
 Select top 2000 cast(u1.FOrderInterID as nvarchar(10))+cast(u1.FOrderEntryID as nvarchar(10)) as FOrderID, Convert(char(10),v1.Fdate,111) as Fdate,case  when v1.FCheckerID>0 then 'Y' when v1.FCheckerID<0 then 'Y' else '' end as 
 FCheck,case when v1.FCancellation=1 then 'Y' else '' end as FCancellation,v1.FBillNo as FBillNo,CASE WHEN v1.FHookStatus=1 THEN 'P' 
 WHEN V1.FHookStatus=2 THEN 'Y' ELSE '' END  as FHookStatus,v1.FStatus as FStatus,t4.FNumber as 'dwdm',t4.FName as 'wldw',
 us.FDescription as 'ywy',i.FName as 'cpmc',i.FModel as 'cpgg',mu.FName as 'jldw',u1.FQty as 'fssl',i.FNumber as 'cpdm',u1.FBatchNo as 'cpph',u1.FNote as 'note',u1.FConsignPrice as 'hsdj',
-case when b.lh is null or b.lh = '' then c.lh else b.lh end as lh
+case when b.lh is null or b.lh = '' then c.lh else b.lh end as lh,u1.FEntrySelfB0161 as 'khddh'
 from ICStockBill v1 INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
 LEFT JOIN t_Organization t4 ON     v1.FSupplyID = t4.FItemID   AND t4.FItemID <>0
 LEFT JOIN t_user us On us.FUserID=v1.FBillerID
@@ -78,9 +80,9 @@ AND v1.FStatus like '%'+@status+'%'
 order by v1.FBillNo,u1.FItemID
 
 if @orderby='null'
-exec('Insert Into #Data(FOrderID,Fdate,FCheck,FCancellation,FBillNo,FHookStatus,FStatus,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,cpph,note,hsdj,lh)select * from #temp')
+exec('Insert Into #Data(FOrderID,Fdate,FCheck,FCancellation,FBillNo,FHookStatus,FStatus,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,cpph,note,hsdj,lh,khddh)select * from #temp')
 else
-exec('Insert Into #Data(FOrderID,Fdate,FCheck,FCancellation,FBillNo,FHookStatus,FStatus,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,cpph,note,hsdj,lh)select * from #temp order by '+ @orderby+' '+ @ordertype)
+exec('Insert Into #Data(FOrderID,Fdate,FCheck,FCancellation,FBillNo,FHookStatus,FStatus,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,cpph,note,hsdj,lh,khddh)select * from #temp order by '+ @orderby+' '+ @ordertype)
 
 
 
@@ -308,5 +310,7 @@ AND (v1.FTranType=21 AND (v1.FCancellation = 0))
 AND v1.FBillNo='XOUT003106' AND i.FNumber='05.01.0013'
 
 
+select * from ICStockBill v1 INNER JOIN ICStockBillEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+where FBillNo='XOUT011821'
 
-
+FEntrySelfB0161

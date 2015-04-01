@@ -15,16 +15,17 @@ FBillNo nvarchar(255) default('')
 ,FUser nvarchar(30) default('')          
 ,FDate nvarchar(255) default('')           
 ,FICMOBillNo nvarchar(255) default('')       
-,FNote nvarchar(255) default('')
+,FNote nvarchar(255) default('')      --订单备注
 ,LH nvarchar(255) default('')
 ,EX nvarchar(255) default('')
 ,caizhi nvarchar(255) default('')
+,beizhu nvarchar(255) default('')     --任务单备注
 )
 
 
-Insert Into #temp(FBillNo,FName,FHelpCode,FModel,FNumber,FBatchNo,FUser,FDate,FICMOBillNo,FNote,LH,EX,caizhi
+Insert Into #temp(FBillNo,FName,FHelpCode,FModel,FNumber,FBatchNo,FUser,FDate,FICMOBillNo,FNote,LH,EX,caizhi,beizhu
 )
-select a.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,a.FBatchNo,u.FFullNumber as FUser,Convert(char(10),a.FDate,120) as FDate,v.FICMOBillNo,isnull(s.FNote,''),'',i.FApproveNo,i.FAlias
+select a.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,a.FBatchNo,u.FFullNumber as FUser,Convert(char(10),a.FDate,120) as FDate,v.FICMOBillNo,isnull(s.FNote,''),'',i.FApproveNo,i.FAlias,o.FNote
 from ICQCBill a 
 left join t_ICItem i on a.FItemID=i.FItemID 
 left join t_Item u on a.FFManagerID=u.FItemID 
@@ -70,12 +71,13 @@ FBillNo nvarchar(255) default('')
 ,LH nvarchar(255) default('')
 ,EX nvarchar(255) default('')
 ,caizhi nvarchar(255) default('')
+,beizhu nvarchar(255) default('')     --任务单备注
 )
 
 
-Insert Into #temp(FBillNo,FName,FHelpCode,FModel,FNumber,FBatchNo,FUser,FDate,FICMOBillNo,FNote,LH,EX,caizhi
+Insert Into #temp(FBillNo,FName,FHelpCode,FModel,FNumber,FBatchNo,FUser,FDate,FICMOBillNo,FNote,LH,EX,caizhi,beizhu
 )
-select o.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,o.FGMPBatchNo,'0225' as FUser,Convert(char(10),getDate(),120) as FDate,o.FBillNo as FICMOBillNo,isnull(s.FNote,''),o.FHeadSelfJ0184,i.FApproveNo,i.FAlias
+select o.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,o.FGMPBatchNo,'0225' as FUser,Convert(char(10),getDate(),120) as FDate,o.FBillNo as FICMOBillNo,isnull(s.FNote,''),o.FHeadSelfJ0184,i.FApproveNo,i.FAlias,o.FNote
 from ICMO o 
 left join (select a.FInterID,b.FEntryID,MIN(b.FEntrySelfS0161) as FNote from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID group by a.FInterID,b.FEntryID) s on s.FInterID=o.FOrderInterID and s.FEntryID=o.FSourceEntryID
 left join t_ICItem i on o.FItemID=i.FItemID 
@@ -115,12 +117,13 @@ FBillNo nvarchar(255) default('')
 ,LH nvarchar(255) default('')
 ,EX nvarchar(255) default('')
 ,caizhi nvarchar(255) default('')
+,beizhu nvarchar(255) default('')     --任务单备注
 )
 
 
-Insert Into #temp(FBillNo,FName,FHelpCode,FModel,FNumber,FBatchNo,FUser,FDate,FICMOBillNo,FNote,LH,EX,caizhi
+Insert Into #temp(FBillNo,FName,FHelpCode,FModel,FNumber,FBatchNo,FUser,FDate,FICMOBillNo,FNote,LH,EX,caizhi,beizhu
 )
-select o.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,o.FGMPBatchNo,'0225' as FUser,Convert(char(10),getDate(),120) as FDate,o.FBillNo as FICMOBillNo,isnull(s.FNote,''),o.FHeadSelfJ0184,i.FApproveNo,i.FAlias
+select o.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,o.FGMPBatchNo,'0225' as FUser,Convert(char(10),getDate(),120) as FDate,o.FBillNo as FICMOBillNo,isnull(s.FNote,''),o.FHeadSelfJ0184,i.FApproveNo,i.FAlias,o.FNote
 from ICMO o 
 left join (select a.FInterID,b.FEntryID,MIN(b.FEntrySelfS0161) as FNote from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID group by a.FInterID,b.FEntryID) s on s.FInterID=o.FOrderInterID and s.FEntryID=o.FSourceEntryID
 left join t_ICItem i on o.FItemID=i.FItemID 
@@ -140,9 +143,9 @@ update #temp set EX=' ' where EX is null
 select top 1 * from #temp
 end
 
-execute print_coc '15262'
+execute print_coc '45065'
 
-execute print_coc_scrw '29760'
+execute print_coc_scrw '36934'
 
 execute print_coc_lzk '13984'
 
