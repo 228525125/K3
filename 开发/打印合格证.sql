@@ -118,12 +118,13 @@ FBillNo nvarchar(255) default('')
 ,EX nvarchar(255) default('')
 ,caizhi nvarchar(255) default('')
 ,beizhu nvarchar(255) default('')     --任务单备注
+,lzk nvarchar(255) default('')
 )
 
 
-Insert Into #temp(FBillNo,FName,FHelpCode,FModel,FNumber,FBatchNo,FUser,FDate,FICMOBillNo,FNote,LH,EX,caizhi,beizhu
+Insert Into #temp(FBillNo,FName,FHelpCode,FModel,FNumber,FBatchNo,FUser,FDate,FICMOBillNo,FNote,LH,EX,caizhi,beizhu,lzk
 )
-select o.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,o.FGMPBatchNo,'0225' as FUser,Convert(char(10),getDate(),120) as FDate,o.FBillNo as FICMOBillNo,isnull(s.FNote,''),o.FHeadSelfJ0184,i.FApproveNo,i.FAlias,o.FNote
+select o.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,o.FGMPBatchNo,'0225' as FUser,Convert(char(10),getDate(),120) as FDate,o.FBillNo as FICMOBillNo,isnull(s.FNote,''),o.FHeadSelfJ0184,i.FApproveNo,i.FAlias,o.FNote,f.FFlowCardNo
 from ICMO o 
 left join (select a.FInterID,b.FEntryID,MIN(b.FEntrySelfS0161) as FNote from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID group by a.FInterID,b.FEntryID) s on s.FInterID=o.FOrderInterID and s.FEntryID=o.FSourceEntryID
 left join t_ICItem i on o.FItemID=i.FItemID 

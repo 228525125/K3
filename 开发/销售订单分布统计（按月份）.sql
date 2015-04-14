@@ -47,8 +47,8 @@ exec(@sql)
 
 end
 
-execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','01.001'
-execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','01.144'
+execute report_xsddfbtj_yf '2014-01-01','2014-03-31','',''
+execute report_xsddfbtj_yf '2015-01-01','2015-03-31','',''
 
 execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','02.001'
 execute report_xsddfbtj_yf '2014-01-01','2014-12-31','','02.007'

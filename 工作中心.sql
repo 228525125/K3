@@ -6,8 +6,8 @@ update t_WorkCenter set FDeviceNum=1,FPersonNum=1 where FDeviceNum=0 and FPerson
 
 
 
-update t_WorkCenter set FDeviceNum=1 where FNumber='006'        --设备数
+update t_WorkCenter set FDeviceNum=1 where FNumber='017'        --设备数
 
-update t_WorkCenter set FPersonNum=1 where FNumber='006'        --人员数
+update t_WorkCenter set FPersonNum=1 where FNumber='017'        --人员数
 
 

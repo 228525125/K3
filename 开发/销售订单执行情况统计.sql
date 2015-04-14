@@ -158,4 +158,22 @@ select b.FAmount as '成本',FPrice as '单价' from ICStockBill a left join ICStock
 select * from ICSale where FStatus=1
 
 
-sele
+
+
+select a.FBillNo,a.FStatus,d.FName,Convert(char(10),a.FDate,120),c.FNumber,c.FName,c.FModel,c.FHelpCode,e.FName,b.FQty,b.FPrice,g.FQty from SEOrder a 
+left join SEOrderEntry b on a.FInterID=b.FInterID
+--left join (select FBillNo,FItemID,FUnitID,sum(FQty) as FQty,min(FPrice) as FPrice,min(FPriceDiscount) as FPriceDiscount,sum(FTaxAmt) as FTaxAmt,sum(FAllAmount) as FAllAmount,max(a.FDate) as FDate from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID where a.FCancellation=0 group by FBillNo,FItemID,FUnitID) b on a.FBillNo=b.FBillNo 
+left join t_ICItem c on b.FItemID=c.FItemID
+left join t_Organization d on a.FCustID=d.FItemID
+left join t_MeasureUnit e on e.FItemID=b.FUnitID
+left join (select FOrderInterID,FOrderEntryID,max(FDate) as FDate,sum(FQty) as FQty from ICStockBill a left join ICStockBillEntry b on a.FInterID=b.FInterID where a.FDate<='2014-12-31' group by b.FOrderInterID,b.FOrderEntryID) g on a.FInterID=g.FOrderInterID and b.FEntryID=g.FOrderEntryID
+where 1=1
+and a.FCancellation=0 
+and a.FDate>='2010-01-01' and a.FDate<='2014-12-31'
+and b.FQty>g.FQty
+--and a.FStatus
+order by a.FDate
+
+
+
+select * from ICStockBillEntry

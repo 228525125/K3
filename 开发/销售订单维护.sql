@@ -635,5 +635,5 @@ LEFT JOIN t_user us On us.FUserID=v1.FBillerID
 LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
 left join t_ICItemBase b on i.FItemID=b.FItemID 
 LEFT JOIN t_MeasureUnit mu on mu.FItemID=u1.FUnitID
-where t4.FNumber = '01.001'
+where t4.FNumber in ('02.001','61.001','61.002','61.003','61.004')
 group by i.FName,i.FNumber,i.FModel,i.FHelpCode

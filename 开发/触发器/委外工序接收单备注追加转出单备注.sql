@@ -60,3 +60,13 @@ select FROM  ICShop_SubcIn v1
 INNER JOIN ICShop_SubcInEntry u1 ON v1.FInterID=u1.FInterID
 
 
+
+----------Ë¢ÐÂµ¥¼Û----------
+UPDATE u1 set u1.FUnitPrice=b.dj,u1.FBaseUnitPrice=b.dj,u1.FAmount=u1.FReceiveQty*b.dj 
+FROM  ICShop_SubcIn v1 
+INNER JOIN ICShop_SubcInEntry u1 ON v1.FInterID=u1.FInterID
+INNER JOIN ICShop_SubcOut a on u1.FSubcOutNo=a.FBillNo
+INNER JOIN rss.dbo.wwzc_wwjysqd b on a.FInterID=b.FSourceInterID and u1.FSubcOutEntryID=b.FSourceEntryID 
+WHERE 1=1 
+AND b.dj is not null
+and v1.FBillNo = 'WWJS004850'

@@ -282,11 +282,35 @@ select FInspectionProject from t_ICItem
 select a.* from ICQCBill a
 left join ICQCBillEntry b on a.FInterID=b.FInterID and b.FInterID>0
 left join ICMO c on a.FICMOInterID=c.FInterID
-where a.FBillNo in ('FQC035063')
+where a.FBillNo in ('FQC045284')
 
 update a set a.FCommitQty=0,a.FAuxCommitQty=0 from ICQCBill a
 left join ICQCBillEntry b on a.FInterID=b.FInterID and b.FInterID>0
 left join ICMO c on a.FICMOInterID=c.FInterID
-where a.FBillNo in ('FQC035063')
+where a.FBillNo in ('FQC045284')
+
+
+
+select a.FHeadSelfT1466,d.FHeadSelfQCS26,b.FEntrySelfT1449,c.FEntrySelfQCS27 
+from ICQCBill a
+left join ICQCBillEntry b on a.FInterID=b.FInterID and b.FInterID>0
+left join ICQCSchemeEntry c on a.FSCBillInterID=c.FInterID and b.FEntryID=c.FEntryID
+left join ICQCScheme d on a.FSCBillInterID=d.FInterID
+where a.FBillNo in ('FQC045286')
+
+------a.FHeadSelfT1466 : หตร๗
+
+update b set b.FEntrySelfT1449=0 from ICQCBill a
+left join ICQCBillEntry b on a.FInterID=b.FInterID and b.FInterID>0
+left join ICMO c on a.FICMOInterID=c.FInterID
+where a.FBillNo in ('FQC045284')
+
+
+select b.* from ICQCScheme a 
+left join ICQCSchemeEntry b on a.FInterID=b.FInterID
+where 1=1
+and a.FInterID=1647
+
+
 
 

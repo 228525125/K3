@@ -178,11 +178,11 @@ delete thcx where id=7299
 
 
 SELECT a.FBillNo,
-a.FQty,
-ROUND(case when (b.FAuxStockQty + ISNULL(-f.FQty,0) + ISNULL(-k.FQty,0))>b.FAuxQtyMust then b.FAuxQtyMust else b.FAuxStockQty end/b.FAuxQtyScrap,0),
-ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0), 
-ROUND(ISNULL(-e.FQty,0)/b.FAuxQtyScrap,0) , 
-ISNULL(c.FQty,0) , 
+a.FQty as '计划',
+ROUND(case when (b.FAuxStockQty + ISNULL(-f.FQty,0) + ISNULL(-k.FQty,0))>b.FAuxQtyMust then b.FAuxQtyMust else b.FAuxStockQty end/b.FAuxQtyScrap,0) as '已领',
+ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) as '报废', 
+ROUND(ISNULL(-e.FQty,0)/b.FAuxQtyScrap,0) as '退料', 
+ISNULL(c.FQty,0) as '申请', 
 a.FCheckCommitQty,
 a.FQty -(ROUND(case when (b.FAuxStockQty + ISNULL(-f.FQty,0) + ISNULL(-k.FQty,0))>b.FAuxQtyMust then b.FAuxQtyMust else (b.FAuxStockQty + ISNULL(-f.FQty,0) + ISNULL(-k.FQty,0)) end/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) + ROUND(ISNULL(-e.FQty,0)/b.FAuxQtyScrap,0) - ISNULL(c.FQty,0))
 --max(a.FQty - (ROUND(case when b.FAuxStockQty>b.FAuxQtyMust then b.FAuxQtyMust else b.FAuxStockQty end/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) + ISNULL(-e.FQty,0) - ISNULL(c.FQty,0))) as '计算结果'
@@ -198,10 +198,10 @@ where 1=1
 and b.FAuxQtyMust>0                  --计划投料数量等于0 表示取消投料，因此不参加计算
 and left(d.FNumber,3)<>'08.'                        --不考虑包装材料
 and b.FAuxQtyScrap > 0                              --单位用量必须大于0
-and a.FQty -(ROUND(case when (b.FAuxStockQty + ISNULL(-f.FQty,0) + ISNULL(-k.FQty,0))>b.FAuxQtyMust then b.FAuxQtyMust else (b.FAuxStockQty + ISNULL(-f.FQty,0) + ISNULL(-k.FQty,0)) end/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) + ROUND(ISNULL(-e.FQty,0)/b.FAuxQtyScrap,0) - ISNULL(c.FQty,0)) <> a.FCheckCommitQty   --计划 - (已领 - 报废 + 退料（2013-06-26之前） - 申请)
+--and a.FQty -(ROUND(case when (b.FAuxStockQty + ISNULL(-f.FQty,0) + ISNULL(-k.FQty,0))>b.FAuxQtyMust then b.FAuxQtyMust else (b.FAuxStockQty + ISNULL(-f.FQty,0) + ISNULL(-k.FQty,0)) end/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) + ROUND(ISNULL(-e.FQty,0)/b.FAuxQtyScrap,0) - ISNULL(c.FQty,0)) <> a.FCheckCommitQty   --计划 - (已领 - 报废 + 退料（2013-06-26之前） - 申请)
 and a.FStatus in (1,2)        --下达状态
 and a.FCheckDate>='2015-01-01'   --之前的时间是2013-06-01，之所以修改时间是因为之前不考虑多部件的情况
-and a.FBillNo='WORK036061'
+and a.FBillNo='WORK036684'
 --group by a.FBillNo
 
 
