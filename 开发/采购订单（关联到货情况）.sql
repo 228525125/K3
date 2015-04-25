@@ -15,7 +15,7 @@ case when i.FInspectionLevel=353 then '≥ÈºÏ' else '√‚ºÏ' end as cjfs,
 v1.FInterID,v1.FBillNo,case when v1.FCancellation=1 then 'Y' else '' end as 
 FCancellation,u1.FSourceBillNo,u1.FSourceInterID,FSourceEntryID,u1.FEntryID,convert(char(10),v1.FDate,120) as FDate,i.FNumber as 'cpdm',i.FName as 'cpmc',i.FModel as 'cpgg',mu.FName as 'jldw',
 u1.FQty as 'fssl',u1.FPriceDiscount as 'hsdj',u1.FAllAmount as 'hsje',convert(char(10),u1.FDate,120) as 'jhrq',us.FDescription as 'ywy',s.FName as 'gys',
-case when a.FDate is null then b.FDate ELSE a.FDate END as 'dhrq',
+case when a.FDate is null then convert(char(10),b.FDate,120) ELSE convert(char(10),a.FDate,120) END as 'dhrq',
 isnull(a.FQty,0) as 'sj',isnull(a.FPassQty,0) as 'hg',isnull(a.FNotPassQty,0) as 'bhg',isnull(a.FConPassQty,0) as 'rbjs',
 isnull(b.FQty,0) as 'sh',case when a.FCommitQty is null then b.FCommitQty ELSE a.FCommitQty END as 'rksl',
 case when c.FItemID is null then 'Y' else '' end as 'shouci'
@@ -48,9 +48,27 @@ where 1=1
 AND v1.FChangeMark=0 AND ( Isnull(v1.FClassTypeID,0)<>1007101) AND v1.FCancellation = 0
 AND convert(char(10),u1.FDate,120)>=@begindate AND  convert(char(10),u1.FDate,120)<=@enddate
 AND (v1.FBillNo like '%'+@query+'%' or i.FNumber like '%'+@query+'%' or i.FName like '%'+@query+'%'
-or u1.FSourceBillNo like '%'+@query+'%' or i.FModel like '%'+@query+'%' or us.FDescription like '%'+@query+'%')
+or u1.FSourceBillNo like '%'+@query+'%' or i.FModel like '%'+@query+'%' or us.FDescription like '%'+@query+'%'
+or s.FName like '%'+@query+'%' or s.FNumber like '%'+@query+'%')
 end
 
 
-exec table_cgdd '','2015-01-01','2015-01-31'
+exec table_cgdd '','2015-01-01','2015-03-31'
+exec table_cgdd '06.006','2015-01-01','2015-03-31'
+exec table_cgdd '08.001','2015-01-01','2015-03-31'
+exec table_cgdd '06.021','2015-01-01','2015-03-31'
+exec table_cgdd '06.001','2015-01-01','2015-03-31'
+exec table_cgdd '07.002','2015-01-01','2015-03-31'
+exec table_cgdd '01.007','2015-01-01','2015-03-31'
+exec table_cgdd '01.005','2015-01-01','2015-03-31'
+exec table_cgdd '01.162','2015-01-01','2015-03-31'
+exec table_cgdd '01.177','2015-01-01','2015-03-31'
+exec table_cgdd '01.014','2015-01-01','2015-03-31'
+exec table_cgdd '06.018','2015-01-01','2015-03-31'
+exec table_cgdd '01.138','2015-01-01','2015-03-31'
+
+
+
+
+
 
