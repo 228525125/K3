@@ -22,8 +22,13 @@ BEGIN
 END
 
 
-select FGMPBatchNo,* from ICMO where FBillNo='WORK028138' and (FGMPBatchNo='' or FGMPBatchNo is not null)
+select FGMPBatchNo,* from ICMO where FBillNo='WORK037660' and (FGMPBatchNo='' or FGMPBatchNo is not null)
 
-update ICMO set FGMPBatchNo='9C03' where FBillNo='WORK028138' and (FGMPBatchNo='' or FGMPBatchNo is not null)
+update ICMO set FGMPBatchNo='14G16' where FBillNo='WORK037660' and (FGMPBatchNo='' or FGMPBatchNo is not null)
 
-select b.* from PPBOM a left join PPBOMEntry b ON a.FInterID = b.FInterID  AND b.FInterID<>0 where b.FEntryID=2
+select b.* from PPBOM a left join PPBOMEntry b ON a.FInterID = b.FInterID  AND b.FInterID<>0 where a.FICMOInterID=39327
+
+update b set b.FBatchNo='14G16' 
+from PPBOM a left join PPBOMEntry b ON a.FInterID = b.FInterID  AND b.FInterID<>0 where a.FICMOInterID=39327
+
+

@@ -94,7 +94,7 @@ and b.FAuxQtyScrap > 0                              --单位用量必须大于0
 --and b.FUnitID in (179,181,183,185,187,189,214,227,334,338,5947)           --计量单位没有小数点的
 and ROUND(b.FAuxStockQty/b.FAuxQtyScrap,0) + ROUND((ISNULL(-f.FQty,0)+ISNULL(-k.FQty,0))/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) - (a.FQtyForItem+a.FQtyScrap) <> a.FStockQty    --已领 - 材料报废 - 产品不合格 <> 入库
 and a.FStatus in (1,2)        --下达状态
-and a.FBillNo='WORK036912'
+and a.FBillNo='WORK037862'
 --group by a.FBillNo
 order by a.FBillNo
 
@@ -117,5 +117,5 @@ and b.FAuxQtyScrap > 0                              --单位用量必须大于0
 and ROUND(b.FAuxStockQty/b.FAuxQtyScrap,0) + ROUND((ISNULL(-f.FQty,0)+ISNULL(-k.FQty,0))/b.FAuxQtyScrap,0) - ROUND(b.FDiscardAuxQty/b.FAuxQtyScrap,0) - (a.FQtyForItem+a.FQtyScrap) = a.FStockQty    --已领 - 材料报废 - 产品报废 = 入库
 and b.FAuxStockQty+ISNULL(-n.FQty,0)+ISNULL(-k.FQty,0)>=FAuxQtyPick                 --全部领料；已领+退料 >= 应发
 and a.FStatus in (1,2)        --下达状态
-and a.FBillNo='WORK036912'
+and a.FBillNo='WORK037862'
 

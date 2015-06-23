@@ -379,3 +379,13 @@ update POOrder set FBillNo='JH-1303-52' where FBillNo='JH-1302-70'
 
 
 
+
+
+select i.FNumber from POOrder v1 
+INNER JOIN POOrderEntry u1 ON v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
+LEFT JOIN t_MeasureUnit mu on mu.FItemID=u1.FUnitID 
+LEFT JOIN t_user us on us.FUserID=v1.FBillerID 
+LEFT JOIN t_Supplier s on v1.FSupplyID=s.FItemID
+where s.FNumber='08.001'
+group by i.FNumber

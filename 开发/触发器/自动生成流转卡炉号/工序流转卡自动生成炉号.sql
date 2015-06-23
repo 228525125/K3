@@ -8,14 +8,32 @@ SET NOCOUNT ON
 IF EXISTS(SELECT 1 FROM inserted)
 BEGIN
 DECLARE @FInterID int        --关联任务单内码
-SELECT @FInterID=FSRCInterID FROM inserted
+DECLARE @FID int             --流转卡内码
+SELECT @FID=FID,@FInterID=FSRCInterID FROM inserted
 EXECUTE sclzklh @FInterID
+
+DECLARE @FBatchNo nvarchar(255)        --产品批号，也是材料批号
+SELECT @FBatchNo=FText FROM ICShop_FlowCard WHERE FID=@FID
+
+--IF @FBatchNo<>'' and @FBatchNo is not null          --加上IF语句就会报错，方法''应用于
+--BEGIN
+DECLARE @FText2 nvarchar(255)
+SET @FText2=''
+SELECT @FText2=i.FName+'/'+i.FModel 
+FROM POInstockEntry a
+INNER JOIN t_ICItem i on a.FItemID=i.FItemID
+WHERE a.FBatchNo=@FBatchNo
+
+UPDATE ICShop_FlowCard SET FText2=@FText2
+WHERE FID=@FID
+--END
+
 END 
 
 
 
 
-select a.FText1,b.FHeadSelfJ0184 from ICShop_FlowCard a left join ICMO b on a.FSourceBillNo=b.FBillNo where b.FBillNo='WORK024670'
+select a.FText1,b.FHeadSelfJ0184 from ICShop_FlowCard a left join ICMO b on a.FSourceBillNo=b.FBillNo where b.FBillNo='WORK038073'
 
 update a set a.FText1=b.FHeadSelfJ0184 from ICShop_FlowCard a left join ICMO b on a.FSourceBillNo=b.FBillNo
 
@@ -37,8 +55,22 @@ select * from ICMO where FBillNo='WORK025241'
 update ICMO set FCheckCommitQty=0,FAuxCheckCommitQty=0 where FBillNo='WORK025051'
 
 
-select * from 
+select top 50 * from ICShop_FlowCard order by fid desc
 
 
 
 
+
+
+DECLARE @FBatchNo nvarchar(255)        --产品批号，也是材料批号
+SELECT @FBatchNo=FText FROM ICShop_FlowCard WHERE FID=50887
+
+IF @FBatchNo<>'' and @FBatchNo is not null
+BEGIN
+DECLARE @FText2 nvarchar(255)
+SELECT @FText2=i.FName+'/'+i.FModel FROM POInstockEntry a
+INNER JOIN t_ICItem i on a.FItemID=i.FItemID
+WHERE a.FBatchNo=@FBatchNo
+
+select @FText2
+end

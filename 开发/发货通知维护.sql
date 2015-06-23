@@ -28,6 +28,7 @@ FOrderID nvarchar(20) default('')
 ,cpdm nvarchar(20) default('')
 ,jskc decimal(28,2) default(0)    
 ,cksl decimal(28,2) default(0)         
+,yjrkl decimal(28,2) default(0)         --预计入库量
 )
 
 create table #Data(
@@ -48,6 +49,7 @@ FOrderID nvarchar(20) default('')
 ,cpdm nvarchar(20) default('')
 ,jskc decimal(28,2) default(0)          
 ,cksl decimal(28,2) default(0)    
+,yjrkl decimal(28,2) default(0)         --预计入库量
 )
 
 Create Table #TempInventory( 
@@ -74,13 +76,14 @@ Insert Into #TempInventory Select u1.FBrNo,u1.FItemID,u1.FBatchNo,u1.FMTONo,u1.F
 u1.FKFPeriod,ISNULL(u1.FKFDate,''),ISNULL(u1.FKFDate,''),u1.FStockTypeID,0,u1.FAuxPropID,u1.FSecQty From POInventory u1 where u1.FQty<>0 
 
 
-Insert Into #temp(FOrderID,FOutID,FCheck,FCloseStatus,FStatus,Fdate,FBillNo,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,jskc,cksl
+Insert Into #temp(FOrderID,FOutID,FCheck,FCloseStatus,FStatus,Fdate,FBillNo,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,jskc,cksl,yjrkl
 )
 Select top 2000 cast(u1.FOrderInterID as nvarchar(10))+cast(u1.FOrderEntryID as nvarchar(10)) as FOrderID,cast(v1.FInterID as nvarchar(10))+cast(u1.FEntryID as nvarchar(10)) as FOutID,
 case  when v1.FCheckerID>0 then 'Y' when v1.FCheckerID<0 then 'Y' else '' end as FCheck,case  when v1.FClosed=1 then 'Y' else '' end as FCloseStatus,case when v1.FStatus=3 then 'Y' else '' end as FStatus,Convert(char(10),v1.Fdate,111) as Fdate,
 v1.FBillNo as FBillNo,t4.FNumber as 'dwdm',t4.FName as 'wldw',
-us.FDescription as 'ywy',t17.FName as 'cpmc',t17.FModel as 'cpgg',mu.FName as 'jldw',u1.FQty as 'fssl',t17.FNumber as 'cpdm',h.FBUQty as 'jskc',x.FQty as 'cksl'
-from SEOutStock v1 INNER JOIN SEOutStockEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+us.FDescription as 'ywy',t17.FName as 'cpmc',t17.FModel as 'cpgg',mu.FName as 'jldw',u1.FQty as 'fssl',t17.FNumber as 'cpdm',h.FBUQty as 'jskc',x.FQty as 'cksl',isnull(k.FQty,0) as 'yjrkl'
+from SEOutStock v1 
+INNER JOIN SEOutStockEntry u1 ON     v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
 LEFT JOIN (select b.FSourceInterId,b.FSourceEntryId,sum(b.FQty) as FQty from ICStockBill a left join ICStockBillEntry b on a.FInterID=b.FInterID where a.FTranType=21 AND a.FCancellation = 0 group by b.FSourceInterId,b.FSourceEntryId) x on u1.FInterID=x.FSourceInterId and u1.FEntryId=x.FSourceEntryId
  INNER JOIN t_Organization t4 ON     v1.FCustID = t4.FItemID   AND t4.FItemID <>0 
  INNER JOIN t_ICItem t17 ON     u1.FItemID = t17.FItemID   AND t17.FItemID <>0 
@@ -105,6 +108,23 @@ AND t2.FTypeID in (500,20291,20293)
 	and t2.FItemID <> '5888'             --封存库
 group by t1.FItemID
 ) h on u1.FItemID=h.FItemID
+LEFT JOIN (
+select v1.FItemID,isnull(sum(v1.FQty),0)-isnull(sum(w.FQty),0) as FQty 
+from ICMO v1
+LEFT JOIN t_Department t8 ON v1.FWorkShop = t8.FItemID  AND t8.FItemID<>0 
+LEFT JOIN t_ICItem i on v1.FItemID = i.FItemID 
+LEFT JOIN t_MeasureUnit mu on mu.FItemID=v1.FUnitID 
+LEFT JOIN (
+select u1.FICMOBillNo,sum(u1.FQty) as FQty from ICStockBill v1 
+INNER JOIN ICStockBillEntry u1 ON v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+where 1=1 AND v1.FTranType=2 AND  v1.FCancellation = 0
+group by u1.FICMOBillNo
+) w on v1.FBillNo=w.FICMOBillNo
+where 1=1 
+AND (v1.FTranType = 85 AND ( v1.FType <> 11060 ) AND (v1.FCancellation = 0))
+AND v1.FStatus in (1,5)
+group by v1.FItemID
+) k on k.FItemID = u1.FItemID
  where 1=1 
 AND (v1.FTranType=83 AND (v1.FCancellation = 0))
 AND v1.FDate>=@begindate AND  v1.FDate<=@enddate
@@ -115,9 +135,9 @@ AND v1.FClosed like '%'+@status+'%'
 order by v1.FBillNo,u1.FItemID
 
 if @orderby='null'
-exec('Insert Into #Data(FOrderID,FOutID,FCheck,FCloseStatus,FStatus,Fdate,FBillNo,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,jskc,cksl)select * from #temp')
+exec('Insert Into #Data(FOrderID,FOutID,FCheck,FCloseStatus,FStatus,Fdate,FBillNo,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,jskc,cksl,yjrkl)select * from #temp')
 else
-exec('Insert Into #Data(FOrderID,FOutID,FCheck,FCloseStatus,FStatus,Fdate,FBillNo,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,jskc,cksl)select * from #temp order by '+ @orderby+' '+ @ordertype)
+exec('Insert Into #Data(FOrderID,FOutID,FCheck,FCloseStatus,FStatus,Fdate,FBillNo,dwdm,wldw,ywy,cpmc,cpgg,jldw,fssl,cpdm,jskc,cksl,yjrkl)select * from #temp order by '+ @orderby+' '+ @ordertype)
 
 Insert Into  #Data(FBillNo,fssl)
 Select '合计',sum(u1.FQty) as 'fssl'
@@ -238,4 +258,5 @@ select * from SEOutStock where
 select a.* from SEOutStock a left join SEOutStockEntry b on a.FInterID=b.FInterID where a.FDate='2013-10-30'
 
 select i.FNumber,* from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID left join t_ICItem i on b.FItemID=i.FItemID where b.FInterID=3407 and b.FEntryID=3 --FBillNo='SEORD002079'
+
 

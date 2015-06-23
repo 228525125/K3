@@ -1,6 +1,7 @@
 select a.FItemID as '物料编码',a.FNumber as '物料长代码',a.FName as '名称',a.FModel as '规格',a.FHelpCode as '图号',
 m.FName as '计量单位',b.FSecInv as '安全库存',b.FHighLimit as '最高库存',b.FLowLimit as '最低库存',c.FName as '默认仓库',
-d.FBatchAppendQty as '批量增量',d.FQtyMin as '最小订货量',d.FDailyConsume as '日消耗量',d.FFixLeadTime as '采购周期',e.FProChkMde as '产品检验方式',e.FSOChkMde as '发货检验方式',e.*
+d.FBatchAppendQty as '批量增量',d.FQtyMin as '最小订货量',d.FDailyConsume as '日消耗量',d.FFixLeadTime as '采购周期',e.FProChkMde as '产品检验方式',e.FSOChkMde as '发货检验方式',
+a.FQtyDecimal as '数量精度',m.FName as '计量单位'
 from t_ICItem a 
 left join t_ICItemBase b on a.FItemID=b.FItemID 
 left join t_Stock c on b.FDefaultLoc=c.FItemID 
@@ -9,7 +10,7 @@ left join t_ICItemQuality e on a.FItemID=e.FItemID
 LEFT JOIN t_MeasureUnit m on m.FItemID=a.FUnitID 
 --inner join rss.dbo.export_aqkc111010 f on a.FName=f.wlmc and a.FModel=f.gg and wldm is null 
 where 1=1 
-and a.FNumber in ('05.08.7006')
+and a.FNumber in ('01.01.01.001')
 --and b.FSecInv<>0
 --and (a.FModel like '%F9340ZF%' or a.FHelpCode like '%F9340ZF%')
 --and b.FUseState=341 
@@ -268,9 +269,9 @@ select FErpClsID from t_ICItem where FNumber in ('05.08.4502','05.08.4503')
 update t_ICItem set FErpClsID=1 where FNumber in ('05.08.4502','05.08.4503')
 
 ------------物料禁用-----------
-select FDeleted,* from t_ICItem where FNumber in ('02.02.04.003')
+select FDeleted,* from t_ICItem where FNumber in ('05.03.2002')
 
-update t_ICItem set FDeleted=0 where FNumber in ('02.02.04.003')
+update t_ICItem set FDeleted=1 where FNumber in ('05.03.2002')
 
 -----------助记码与图号不一致的物料---------
 select FHelpCode,FChartNumber,* from t_ICItem where FHelpCode<>FChartNumber
@@ -324,13 +325,22 @@ left join t_ICItemQuality e on a.FItemID=e.FItemID
 LEFT JOIN t_MeasureUnit m on m.FItemID=a.FUnitID 
 
 
+select a.FItemID as '物料编码',a.FNumber as '物料长代码',a.FName as '名称',a.FModel as '规格',a.FHelpCode as '图号',
+m.FName as '计量单位',b.FQtyDecimal as '数量精度'
+from t_ICItem a 
+left join t_ICItemBase b on a.FItemID=b.FItemID
+LEFT JOIN t_MeasureUnit m on m.FItemID=a.FUnitID 
+where 1=1 
+and m.FName = 'kg'
+and left(a.FNumber,3)='01.'
+and a.FQtyDecimal >0
 
-Select * From t_BaseProperty Where FTypeID = 3 And FItemID = 7161
+update b set b.FQtyDecimal=4 from t_ICItem a 
+left join t_ICItemBase b on a.FItemID=b.FItemID
+LEFT JOIN t_MeasureUnit m on m.FItemID=a.FUnitID 
+where 1=1 
+and m.FName = 'kg'
+and left(a.FNumber,3)='01.'
+and a.FQtyDecimal >0
 
-Select b.FNumber,b.FHelpCode,b.FModel,b.FName,c.FName From t_BaseProperty a 
-Inner join t_ICItem b on a.FItemID=b.FItemID 
-left join t_user c on a.FCreateUser=c.FName
-Where FCreateDate>='2014-04-29'
 
-
-select * from t_user

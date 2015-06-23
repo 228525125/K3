@@ -39,12 +39,13 @@ SELECT @PH1=FGMPBatchNo FROM ICMO WHERE FInterID=@FInterID
 
 UPDATE ICShop_FlowCard SET FText=@PH1,FText1='见零部件批号' WHERE FSRCInterID=@FInterID
 END
+
 end
 
 
-execute sclzklh 36181
+execute sclzklh 39742
 
-select FInterID,* from ICMO where FBillNo='WORK034514'
+select FInterID,* from ICMO where FBillNo='WORK038073'
 
 
 

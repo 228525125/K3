@@ -22,6 +22,7 @@ LEFT JOIN (select b.FICMOInterID,b.FPPBomEntryID,sum(b.FQty) as FQty from ICSTJG
 LEFT JOIN t_ICItem i on a.FItemID=i.FItemID
 where 1=1
 and b.FAuxQtyMust>0                  --计划投料数量等于0 表示取消投料，因此不参加计算
+and b.FAuxQtyMust=b.FBomInputAuxQty  --计划投料数量等于标准用量的
 --and not exists(select 1 from PPBOM bom inner join PPBOMEntry bome on bom.FInterID=bome.FInterID where bome.FICMOInterID=b.FICMOInterID and bome.FEntryID=2 and bom.FItemID=a.FItemID)   --不存在产品bom里有多于1个原材料，即成品与原材料一一对应，bom没有多于的原材料
 and left(d.FNumber,3)<>'08.'                        --不考虑包装材料
 and b.FAuxQtyScrap > 0                              --单位用量必须大于0
@@ -117,8 +118,8 @@ group by a.FBillNo
 
 
 
-select FCheckCommitQty from ICMO where FBillNo='WORK030966'
-update ICMO set FCheckCommitQty=0,FAuxCheckCommitQty=0 where FBillNo = 'WORK030966'
+select FCheckCommitQty from ICMO where FBillNo='WORK037954'
+update ICMO set FCheckCommitQty=0,FAuxCheckCommitQty=0 where FBillNo = 'WORK037954'
 
 
 select FNumber from t_ICItem where FItemID=1178

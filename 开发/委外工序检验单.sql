@@ -212,8 +212,12 @@ select * from rss.dbo.wwzc_wwjysqd where FSourceInterID=2502 and FSourceEntryID=
 select * FROM ICQCBill v1 
 where 1=1
 AND (v1.FTranType=715 AND v1.FCancellation = 0)
-AND FBillNo in ('SIPQC006968','SIPQC007052')
+AND FBillNo in ('SIPQC008165')
 
 
-update ICQCBill set FPassQty=2,FNotPassQty=0,FBasePassQty=2 where 1=1 AND (FTranType=715 AND FCancellation = 0) and FBillNo='SIPQC006968'
+update ICQCBill set FNote='' where 1=1 AND (FTranType=715 AND FCancellation = 0) and FBillNo='SIPQC008165'
+
+
+
+
 

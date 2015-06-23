@@ -45,6 +45,12 @@ IF EXISTS(
 	and d.FNumber <> '06.07.0135' and d.FNumber<>'06.07.0045' and d.FNumber<>'06.07.0040'      --不考虑外购称重的半成品
 )
 RAISERROR (50021,16,1 )
+
+UPDATE b SET b.FQty=b.FEntrySelfZ0632*c.FAuxQtyScrap,b.FAuxQty=b.FEntrySelfZ0632*c.FAuxQtyScrap
+FROM inserted a 
+INNER JOIN  ICItemScrapEntry b on a.FInterID=b.FInterID 
+INNER JOIN PPBOMEntry c on b.FICMOInterID=c.FICMOInterID and b.FSourceEntryID=c.FEntryID
+WHERE b.FUnitID=173         --计量单位为kg
 END
 
 

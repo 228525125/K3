@@ -313,4 +313,8 @@ and a.FInterID=1647
 
 
 
+select * from ICQCBill where FBillNo in ('FQC037419','FQC039325','FQC039460','FQC035522')
+
+update ICQCBill set FCheckerID=0,FStatus=0 where FBillNo in ('FQC037419','FQC039325','FQC039460','FQC035522')
+
 

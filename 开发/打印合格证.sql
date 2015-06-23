@@ -144,7 +144,7 @@ update #temp set EX=' ' where EX is null
 select top 1 * from #temp
 end
 
-execute print_coc '45065'
+execute print_coc 'FQC046065'
 
 execute print_coc_scrw '36934'
 
@@ -168,3 +168,14 @@ select * from t_Item where FItemID=167
 select * from coc1
 
 update coc1 set caizhi=''
+
+
+
+select a.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,a.FBatchNo,u.FFullNumber as FUser,Convert(char(10),a.FDate,120) as FDate,v.FICMOBillNo,isnull(s.FNote,''),'',i.FApproveNo,i.FAlias,o.FNote
+from ICQCBill a 
+left join t_ICItem i on a.FItemID=i.FItemID 
+left join t_Item u on a.FFManagerID=u.FItemID 
+left join (select FBillNo,FICMOBillNo from View_ProductInspectionSlip713 group by FBillNo,FICMOBillNo) v on v.FBillNo = a.FBillNo
+left join ICMO o on v.FICMOBillNo=o.FBillNo
+left join (select a.FInterID,b.FEntryID,MIN(b.FEntrySelfS0161) as FNote from SEOrder a left join SEOrderEntry b on a.FInterID=b.FInterID group by a.FInterID,b.FEntryID) s on s.FInterID=o.FOrderInterID and s.FEntryID=o.FSourceEntryID
+where a.FBillNo like '%FQC046065%'

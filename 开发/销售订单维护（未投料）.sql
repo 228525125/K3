@@ -116,7 +116,7 @@ u1.FKFPeriod,ISNULL(u1.FKFDate,''),ISNULL(u1.FKFDate,''),u1.FStockTypeID,0,u1.FA
 Insert Into #temp(FTranType,FInterID,FEntryID,FCheck,FCloseStatus,Fdate,FBillNo,FChangeDate,FVersionNo,FCancellation,dwdm,wldw,bgrq,bgyy,bgr,ywy,cpmc,cpgg
 ,jldw,fssl,wsdj,hsdj,xxs,hsje,jhrq,cpdm,hywgb,jcsl,jhsl,rksl,cksl/*,state*/,kpsl/*,ckrq,fphsdj*/,aqkc
 )
-Select top 2000 v1.FTranType as FTranType,v1.FInterID as FInterID,u1.FEntryID as FEntryID,case when v1.FCheckerID>0 then 'Y' when v1.FCheckerID<0 then 'Y' else '' 
+Select v1.FTranType as FTranType,v1.FInterID as FInterID,u1.FEntryID as FEntryID,case when v1.FCheckerID>0 then 'Y' when v1.FCheckerID<0 then 'Y' else '' 
 end  as FCheck,CASE WHEN v1.FStatus = 3 OR v1.FClosed = 1 THEN 'Y' ELSE '' END as FCloseStatus,Convert(char(10),v1.Fdate,120) as Fdate,v1.FBillNo as FBillNo,Convert(char(10),v1.FChangeDate,120) as 
 FChangeDate,v1.FVersionNo as FVersionNo,case when v1.FCancellation=1 then 'Y' else '' end as FCancellation,t4.FNumber as 'dwdm',t4.FName as 'wldw',FChangeDate as 'bgrq',FChangeCauses as 'bgyy',
 u.FDescription as 'bgr',us.FDescription as 'ywy',i.FName as 'cpmc',i.FModel as 'cpgg',mu.FName as 'jldw',u1.FQty as 'fssl',
@@ -185,9 +185,9 @@ group by u1.FOrderInterID,u1.FOrderEntryID
 where 1=1 
 AND (v1.FChangeMark=0 
 AND ( Isnull(v1.FClassTypeID,0)<>1007100) 
-AND ((v1.FDate>=@begindate AND  v1.FDate<=@enddate) AND  v1.FCancellation = 0))
-AND (FBillNo like '%'+@query+'%' or t4.FNumber like '%'+@query+'%' or t4.FName like '%'+@query+'%' or u.FDescription like '%'+@query+'%' 
-or i.FModel like '%'+@query+'%' or i.FNumber like '%'+@query+'%')
+AND ((v1.FDate>='2015-01-01' AND  v1.FDate<='2015-06-30') AND  v1.FCancellation = 0))
+--AND (FBillNo like '%'+@query+'%' or t4.FNumber like '%'+@query+'%' or t4.FName like '%'+@query+'%' or u.FDescription like '%'+@query+'%' 
+--or i.FModel like '%'+@query+'%' or i.FNumber like '%'+@query+'%')
 order by v1.FDate, v1.FBillNo
 
 if @orderby='null'
@@ -210,6 +210,8 @@ end
 
 
 ------------count--------------
+--drop procedure portal_list_xsdd_count 
+
 create procedure portal_list_xsdd_count 
 @query varchar(100),
 @begindate varchar(10),
@@ -322,7 +324,7 @@ u1.FKFPeriod,ISNULL(u1.FKFDate,''),ISNULL(u1.FKFDate,''),u1.FStockTypeID,0,u1.FA
 Insert Into #temp(FTranType,FInterID,FEntryID,FCheck,FCloseStatus,Fdate,FBillNo,FChangeDate,FVersionNo,FCancellation,dwdm,wldw,bgrq,bgyy,bgr,ywy,cpmc,cpgg
 ,jldw,fssl,wsdj,hsdj,xxs,hsje,jhrq,cpdm,hywgb,jcsl,jhsl,cksl,state,kpsl,ckrq,fphsdj,aqkc
 )
-Select top 2000 v1.FTranType as FTranType,v1.FInterID as FInterID,u1.FEntryID as FEntryID,case when v1.FCheckerID>0 then 'Y' when v1.FCheckerID<0 then 'Y' else '' 
+Select v1.FTranType as FTranType,v1.FInterID as FInterID,u1.FEntryID as FEntryID,case when v1.FCheckerID>0 then 'Y' when v1.FCheckerID<0 then 'Y' else '' 
 end  as FCheck,CASE WHEN v1.FStatus = 3 OR v1.FClosed = 1 THEN 'Y' ELSE '' END as FCloseStatus,Convert(char(10),v1.Fdate,120) as Fdate,v1.FBillNo as FBillNo,Convert(char(10),v1.FChangeDate,120) as 
 FChangeDate,v1.FVersionNo as FVersionNo,case when v1.FCancellation=1 then 'Y' else '' end as FCancellation,t4.FNumber as 'dwdm',t4.FName as 'wldw',FChangeDate as 'bgrq',FChangeCauses as 'bgyy',
 u.FDescription as 'bgr',us.FDescription as 'ywy',i.FName as 'cpmc',i.FModel as 'cpgg',mu.FName as 'jldw',u1.FQty as 'fssl',

@@ -22,4 +22,9 @@ END
 
 
 
-select FEntrySelfZ0638,* from ICItemScrapEntry
+select FEntrySelfZ0632,* 
+
+update b set b.FEntrySelfZ0632=6
+from ICItemScrap a left join ICItemScrapEntry b on a.FInterID=b.FInterID where a.FBillNo='FSC007235'
+
+
