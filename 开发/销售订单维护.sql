@@ -627,7 +627,7 @@ select * from t_Organization where FNumber in ('04.006','04.001')
 
 
 
-select i.FName,i.FNumber,i.FModel,i.FHelpCode 
+select i.FNumber,i.FName,i.FModel,i.FHelpCode 
 from SEOrder v1 
 INNER JOIN SEOrderEntry u1 ON v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
 LEFT OUTER JOIN t_Organization t4 ON  v1.FCustID = t4.FItemID   AND t4.FItemID <>0 
@@ -636,8 +636,9 @@ LEFT JOIN t_user us On us.FUserID=v1.FBillerID
 LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
 left join t_ICItemBase b on i.FItemID=b.FItemID 
 LEFT JOIN t_MeasureUnit mu on mu.FItemID=u1.FUnitID
-where t4.FNumber in ('04.001')
+where t4.FNumber in ('01.002')
 group by i.FName,i.FNumber,i.FModel,i.FHelpCode
+order by i.FNumber
 
 
 

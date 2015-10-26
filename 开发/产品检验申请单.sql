@@ -252,3 +252,11 @@ update u1 set u1.FBatchNo='13D28' from QMICMOCKRequest v1
 INNER JOIN QMICMOCKRequestEntry u1 ON   v1.FInterID = u1.FInterID  AND u1.FInterID<>0 
 where FICMOInterID=24907
 
+
+
+select * from QMICMOCKRequest 
+--INNER JOIN QMICMOCKRequestEntry u1 ON   v1.FInterID = u1.FInterID  AND u1.FInterID<>0 
+where FBillNo='FQCR049629'
+
+UPDATE QMICMOCKRequest SET FStatus=0,FCheckerID=NULL,FCheckDate=null WHERE FBillNo='FQCR049629'
+

@@ -35,8 +35,10 @@ select * from t_user
 select a.FBillNo,i.FName,i.FHelpCode,i.FModel,i.FNumber,a.FBatchNo,u.UName,Convert(char(10),a.FDate,120) as FDate from ICQCBill a left join t_ICItem i on a.FItemID=i.FItemID left join t_User u on a.FCheckerID=u.FUserID where FBillNo='FQC010542' 
 
 
-ALTER TABLE coc1 ADD lzk nvarchar(255)
+ALTER TABLE coc1 ADD ip nvarchar(255)
 
 select * from coc1 where Convert(char(10),djrq,120)>='2015-04-01' order by djrq desc
+
+select top 1 * from coc1 order by djrq desc
 
 

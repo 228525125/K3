@@ -313,8 +313,24 @@ and a.FInterID=1647
 
 
 
-select * from ICQCBill where FBillNo in ('FQC037419','FQC039325','FQC039460','FQC035522')
+select * from ICQCBill where FBillNo in ('FQC050253')
 
-update ICQCBill set FCheckerID=0,FStatus=0 where FBillNo in ('FQC037419','FQC039325','FQC039460','FQC035522')
+update ICQCBill set FCheckerID=0,FStatus=0 where FBillNo in ('FQC050253')
 
 
+
+
+select V1.* from ICQCBill v1 
+LEFT JOIN t_ICItem i on v1.FItemID=i.FItemID 
+where 1=1
+and (i.FNumber='05.01.0033' or 
+i.FNumber='05.01.0035' or 
+i.FNumber='05.01.0037' or 
+i.FNumber='05.04.0052')
+
+
+
+select v1.* from ICQCBill v1 
+LEFT JOIN t_ICItem i on v1.FItemID=i.FItemID 
+where 1=1
+and v1.FBillNo in ('FQC047538','FQC047539')

@@ -17,12 +17,12 @@ FStatus nvarchar(20) default('')
 ,FCancellation nvarchar(20) default('')
 ,FSourceBillNo nvarchar(20) default('')
 ,FDate nvarchar(20) default('')
-,cpdm nvarchar(30) default('')          
+,cpdm nvarchar(255) default('')          
 ,cpmc nvarchar(255) default('')           
 ,cpgg nvarchar(255) default('')       
 ,jldw nvarchar(20) default('')           
 ,fssl decimal(28,2) default(0)          
-,wlph nvarchar(20) default('')           
+,wlph nvarchar(255) default('')           
 )
 
 create table #Data(
@@ -32,12 +32,12 @@ FStatus nvarchar(20) default('')
 ,FCancellation nvarchar(20) default('')
 ,FSourceBillNo nvarchar(20) default('')
 ,FDate nvarchar(20) default('')
-,cpdm nvarchar(30) default('')          
+,cpdm nvarchar(255) default('')          
 ,cpmc nvarchar(255) default('')           
 ,cpgg nvarchar(255) default('')       
-,jldw nvarchar(20) default('')           
+,jldw nvarchar(255) default('')           
 ,fssl decimal(28,2) default(0)          
-,wlph nvarchar(20) default('')  
+,wlph nvarchar(255) default('')  
 )
 
 Insert Into #temp(FStatus,FInterID,FBillNo,FCancellation,FSourceBillNo,FDate,cpdm,cpmc,cpgg,jldw,fssl,wlph
@@ -161,7 +161,7 @@ end
 
 
 
-execute list_scll '','2011-08-01','2011-08-31','','null',''
+execute list_scll '','2015-01-01','2015-09-30','','null',''
 
 execute list_scll_count '','2011-08-01','2011-08-31','','null',''
 
@@ -170,8 +170,16 @@ execute list_scll_count 'WORK011866','2000-01-01','2099-12-31','','null','null'
 
 
 
-
-
+SELECT i.FNumber,sum(u1.FQty) from ICStockBill v1 
+INNER JOIN ICStockBillEntry u1 ON v1.FInterID = u1.FInterID   AND u1.FInterID <>0 
+LEFT JOIN t_Department t4 ON v1.FDeptID = t4.FItemID   AND t4.FItemID <>0 
+LEFT JOIN t_ICItem i on u1.FItemID=i.FItemID
+LEFT JOIN t_MeasureUnit mu on mu.FItemID=u1.FUnitID 
+where 1=1 
+AND (v1.FTranType=24 AND v1.FCancellation = 0)
+AND v1.FCheckDate>='2015-01-01' AND  v1.FCheckDate<='2015-09-30'
+AND v1.FStatus = 1
+group by i.FNumber
 
 select * from ICStockBillEntry
 

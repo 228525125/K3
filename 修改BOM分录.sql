@@ -1,19 +1,22 @@
-select b.FStockID,a.FBOMNumber,c.FNumber,FName,b.* 
+select d.FNumber,b.FStockID,a.FBOMNumber,c.FNumber,c.FName,b.* 
 from ICBOM a 
 left join ICBOMCHILD b on a.FInterID=b.FInterID
 left join t_ICItem c on b.FItemID=c.FItemID
-where c.FNumber = '06.07.0088' 
-and b.FStockID<>342
+left join t_ICItem d on a.FItemID=d.FItemID
+where c.FNumber = '05.04.0002' 
+--and b.FStockID<>342
 
-UPDATE b set b.FStockID=340 
+UPDATE b set b.FItemID=19913
 from ICBOM a 
 left join ICBOMCHILD b on a.FInterID=b.FInterID
 left join t_ICItem c on b.FItemID=c.FItemID
 where 1=1
-and c.FNumber like '06.04.0083' 
-and b.FStockID<>342
+and c.FNumber like '05.04.0002' 
+--and b.FStockID<>342
 
 07.08.0003
+
+select * from t_ICItem where FNumber = '05.04.0208'
 
 select * from ICBOMCHILD
 

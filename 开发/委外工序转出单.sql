@@ -263,3 +263,6 @@ INNER JOIN ICShop_SubcOutEntry u1 ON v1.FInterID=u1.FInterID
 
 
 
+select u1.FTranOutQty,u1.FReceiptQty,* FROM  ICShop_SubcOut v1 
+INNER JOIN ICShop_SubcOutEntry u1 ON v1.FInterID=u1.FInterID
+where u1.FTranOutQty < u1.FReceiptQty

@@ -15,17 +15,16 @@ EXECUTE sclzklh @FInterID
 DECLARE @FBatchNo nvarchar(255)        --产品批号，也是材料批号
 SELECT @FBatchNo=FText FROM ICShop_FlowCard WHERE FID=@FID
 
---IF @FBatchNo<>'' and @FBatchNo is not null          --加上IF语句就会报错，方法''应用于
+--IF @FBatchNo<>'' and @FBatchNo is not null          --加上IF语句就会报错，方法'~'作用于对象'~'失败
 --BEGIN
 DECLARE @FText2 nvarchar(255)
 SET @FText2=''
 SELECT @FText2=i.FName+'/'+i.FModel 
 FROM POInstockEntry a
 INNER JOIN t_ICItem i on a.FItemID=i.FItemID
-WHERE a.FBatchNo=@FBatchNo
+WHERE a.FBatchNo=@FBatchNo and @FBatchNo<>'' and @FBatchNo is not null
 
-UPDATE ICShop_FlowCard SET FText2=@FText2
-WHERE FID=@FID
+UPDATE ICShop_FlowCard SET FText2=@FText2 WHERE FID=@FID
 --END
 
 END 

@@ -183,7 +183,7 @@ select count(*) from #Data
 end
 
 
-execute report_xsddhztj '61.006','2014-01-01','2014-12-31',2,'','null',''
+execute report_xsddhztj 'ABB LTD(Ó¢¹ú£©','2014-01-01','2014-12-31',2,'','null',''
 
 execute report_xsddhztj_count 'ÖØÇìºáºÓ','2011-11-01','2011-11-30',2,'null',''
 

@@ -207,4 +207,4 @@ and a.FBillNo='WORK036684'
 
 
 
-select * FROM ICMO a
+select * FROM ICMO a 

@@ -17,13 +17,14 @@ djbh nvarchar(255) default('')
 ,wlgg nvarchar(255) default('')
 ,jldw nvarchar(255) default('')
 ,fssl decimal(28,2) default(0)
+,hh int default(0)
 )
 
-Insert Into #Data(djbh,djrq,jyrq,dhrq,wldm,wlmc,wlgg,jldw,fssl
+Insert Into #Data(djbh,djrq,jyrq,dhrq,wldm,wlmc,wlgg,jldw,fssl,hh
 )
 select a.FBillNo as 'djbh',convert(char(10),a.FDate,120) as 'djrq',
 isnull(convert(char(10),d.QDate,120),'') as 'jyrq',isnull(convert(char(10),case when d.FDate is not null and (d.FDate<c.FDate or c.FDate is null) then d.FDate else c.FDate end,120),'') as 'dhrq',
-i.FNumber as 'wldm',i.FName as 'wlmc',i.FModel as 'wlgg',mu.FName as 'jldw',b.FQty as 'fssl'
+i.FNumber as 'wldm',i.FName as 'wlmc',i.FModel as 'wlgg',mu.FName as 'jldw',b.FQty as 'fssl',b.FEntryID as 'hh'
 from POInstock a 
 INNER JOIN POInstockEntry b ON  a.FInterID = b.FInterID  AND b.FInterID<>0 
 LEFT JOIN t_ICItem i on b.FItemID = i.FItemID 
@@ -85,6 +86,6 @@ select count(1) from #Data where jyrq is null or jyrq=''
 end
 
 
-execute list_wgjywzdj '2013-10-01','2013-10-31'
+execute list_wgjywzdj '2015-10-01','2015-10-31'
 
 execute list_wgjywzdj_count '2013-10-01','2013-10-31'

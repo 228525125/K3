@@ -50,7 +50,8 @@ exec(@sql)
 end
 
 execute report_xsckfbtj_yf '2014-01-01','2014-03-31','',''
-execute report_xsckfbtj_yf '2015-01-01','2015-03-31','',''
+
+execute report_xsckfbtj_yf '2015-01-01','2015-07-31','','01.001'
 
 
 

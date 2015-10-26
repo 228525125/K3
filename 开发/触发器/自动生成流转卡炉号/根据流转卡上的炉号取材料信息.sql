@@ -7,6 +7,7 @@ as
 SET NOCOUNT ON 
 IF EXISTS(SELECT 1 FROM ICShop_FlowCard WHERE FID=@FID and FText<>'' and FText is not null)
 BEGIN
+
 DECLARE @FBatchNo nvarchar(255)        --产品批号，也是材料批号
 SELECT @FBatchNo=FText FROM ICShop_FlowCard WHERE FID=@FID
 
@@ -20,6 +21,12 @@ WHERE a.FBatchNo=@FBatchNo
 UPDATE ICShop_FlowCard SET FText2=@FText2
 WHERE FID=@FID
 END
+
+exec sclzkclxx 54516
+
+
+
+select FText,* from ICShop_FlowCard where FFlowCardNo ='FC31087'
 
 
 

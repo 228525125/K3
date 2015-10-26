@@ -185,17 +185,15 @@ group by u1.FOrderInterID,u1.FOrderEntryID
 where 1=1 
 AND (v1.FChangeMark=0 
 AND ( Isnull(v1.FClassTypeID,0)<>1007100) 
-AND ((v1.FDate>='2015-01-01' AND  v1.FDate<='2015-06-30') AND  v1.FCancellation = 0))
---AND (FBillNo like '%'+@query+'%' or t4.FNumber like '%'+@query+'%' or t4.FName like '%'+@query+'%' or u.FDescription like '%'+@query+'%' 
---or i.FModel like '%'+@query+'%' or i.FNumber like '%'+@query+'%')
+AND ((v1.FDate>=@begindate AND  v1.FDate<=@enddate) AND  v1.FCancellation = 0))
+AND (FBillNo like '%'+@query+'%' or t4.FNumber like '%'+@query+'%' or t4.FName like '%'+@query+'%' or u.FDescription like '%'+@query+'%' 
+or i.FModel like '%'+@query+'%' or i.FNumber like '%'+@query+'%')
 order by v1.FDate, v1.FBillNo
 
 if @orderby='null'
 exec('Insert Into #Data(FTranType,FInterID,FEntryID,FCheck,FCloseStatus,Fdate,FBillNo,FChangeDate,FVersionNo,FCancellation,dwdm,wldw,bgrq,bgyy,bgr,ywy,cpmc,cpgg,jldw,fssl,wsdj,hsdj,xxs,hsje,jhrq,cpdm,hywgb,jcsl,jhsl,rksl,cksl,kpsl,aqkc)select * from #temp')
 else
 exec('Insert Into #Data(FTranType,FInterID,FEntryID,FCheck,FCloseStatus,Fdate,FBillNo,FChangeDate,FVersionNo,FCancellation,dwdm,wldw,bgrq,bgyy,bgr,ywy,cpmc,cpgg,jldw,fssl,wsdj,hsdj,xxs,hsje,jhrq,cpdm,hywgb,jcsl,jhsl,rksl,cksl,kpsl,aqkc)select * from #temp order by '+ @orderby+' '+ @ordertype)
-
---select * from #Data
 
 IF @FClosed=1
 select * from #Data where FCloseStatus='Y' or hywgb='Y'

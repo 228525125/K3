@@ -1,6 +1,6 @@
---drop procedure list_aqkc drop procedure list_aqkc_count
+--drop procedure list_aqkc_full drop procedure list_aqkc_count
 
-create procedure list_aqkc 
+create procedure list_aqkc_full 
 @query varchar(100),
 @month int,
 @state int,                    -- 1£º±¨¾¯ 0£ºÕý³£

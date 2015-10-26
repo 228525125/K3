@@ -191,9 +191,9 @@ select * from ICStockBillEntry where FInterID=21951
 select b.FSourceInterId,b.* from ICStockBill a left join ICStockBillEntry b on a.FInterID=b.FInterID where FBillNo='WIN003628'
 
 
-UPDATE ICStockBillEntry SET FPrice=375/1.17,FEntrySelfA0156=375,FAuxPrice=375/1.17,FAmount=375/1.17*FQty,FEntrySelfA0157=375*FQty WHERE FInterID=43870      --修改系统单单价
+UPDATE ICStockBillEntry SET FPrice=30.85/1.17,FEntrySelfA0156=30.85,FAuxPrice=30.85/1.17,FAmount=30.85/1.17*FQty,FEntrySelfA0157=30.85*FQty WHERE FInterID=233616      --修改系统单单价
 
-UPDATE ICStockBillEntry SET FEntrySelfA0158=FEntrySelfA0156,FEntrySelfA0159=FEntrySelfA0157 WHERE FInterID=43870      --修改系统单单价
+UPDATE ICStockBillEntry SET FEntrySelfA0158=FEntrySelfA0156,FEntrySelfA0159=FEntrySelfA0157 WHERE FInterID=233616      --修改系统单单价
 
 SELECT i.FNumber,i.FName,i.FModel,i.FHelpCode,mu.FName,sum(u1.FQty) as FQty
 from ICStockBill v1 
@@ -205,6 +205,10 @@ AND v1.FTranType=1 AND  v1.FCancellation = 0
 AND v1.FDate>='2012-01-01' and v1.FDate<='2012-12-31'
 group by i.FNumber,i.FName,i.FModel,i.FHelpCode,mu.FName
 order by i.FNumber
+
+select b.FPrice,b.* from ICStockBill a left join ICStockBillEntry b on a.FInterID=b.FInterID where a.FBillNo='WIN008798'
+
+update b set b.FPrice='' from ICStockBill a left join ICStockBillEntry b on a.FInterID=b.FInterID where a.FBillNo='WIN008798'
 
 
 select * from ICStockBill where FBillNo like '%WIN004743%'

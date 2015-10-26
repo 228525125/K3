@@ -1,4 +1,4 @@
---此触发器在生产任务报废补料单时，判断已领料数量-报废数量 < 入库总数*单位用量
+--此触发器在生产任务报废补料单时，判断已领料数量-报废数量 < 入库总数*单位用量   / 通过产品数量折算子物料数量
 --DROP TRIGGER IC_SCRWBFD
 
 CREATE TRIGGER IC_SCRWBFD ON ICItemScrap    
@@ -6,6 +6,13 @@ FOR INSERT,UPDATE
 AS
 BEGIN
 SET NOCOUNT ON
+
+UPDATE b SET b.FQty=b.FEntrySelfZ0632*c.FAuxQtyScrap,b.FAuxQty=b.FEntrySelfZ0632*c.FAuxQtyScrap
+FROM inserted a 
+INNER JOIN  ICItemScrapEntry b on a.FInterID=b.FInterID 
+INNER JOIN PPBOMEntry c on b.FICMOInterID=c.FICMOInterID and b.FSourceEntryID=c.FEntryID
+WHERE b.FUnitID=173         --计量单位为kg
+
 IF EXISTS(
 	SELECT 1 FROM inserted a 
 	INNER JOIN  ICItemScrapEntry b on a.FInterID=b.FInterID 
@@ -46,11 +53,7 @@ IF EXISTS(
 )
 RAISERROR (50021,16,1 )
 
-UPDATE b SET b.FQty=b.FEntrySelfZ0632*c.FAuxQtyScrap,b.FAuxQty=b.FEntrySelfZ0632*c.FAuxQtyScrap
-FROM inserted a 
-INNER JOIN  ICItemScrapEntry b on a.FInterID=b.FInterID 
-INNER JOIN PPBOMEntry c on b.FICMOInterID=c.FICMOInterID and b.FSourceEntryID=c.FEntryID
-WHERE b.FUnitID=173         --计量单位为kg
+
 END
 
 

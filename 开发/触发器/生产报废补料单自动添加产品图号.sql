@@ -1,4 +1,4 @@
---报废补料单自动添加产品图号
+--报废补料单自动添加产品图号 
 --DROP TRIGGER IC_SCBFBL
 
 CREATE TRIGGER IC_SCBFBL ON ICItemScrapEntry    

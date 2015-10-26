@@ -271,7 +271,7 @@ update t_ICItem set FErpClsID=1 where FNumber in ('05.08.4502','05.08.4503')
 ------------物料禁用-----------
 select FDeleted,* from t_ICItem where FNumber in ('05.03.2002')
 
-update t_ICItem set FDeleted=1 where FNumber in ('05.03.2002')
+update t_ICItem set FDeleted=1 where FNumber in ('05.02.2122','09.0934')
 
 -----------助记码与图号不一致的物料---------
 select FHelpCode,FChartNumber,* from t_ICItem where FHelpCode<>FChartNumber
@@ -280,9 +280,9 @@ select FNumber,FName,FModel from t_ICItem where left(FNumber,5)='01.01' and FDel
 
 
 -----------修改物料属性（自制、外购）-----------
-select FErpClsID,* from t_ICItem where FNumber in ('07.02.1063')
+select FErpClsID,* from t_ICItem where FNumber in ('06.07.0160','06.07.0161','06.04.0142')
 
-update t_ICItem set FErpClsID=1 where FNumber in ('07.02.1063')
+update t_ICItem set FErpClsID=1 where FNumber in ('06.07.0160','06.07.0161','06.04.0142')
 
 ----------修改单价精度-----------
 select FPriceDecimal,* from t_ICItem where FPriceDecimal=0
@@ -344,3 +344,12 @@ and left(a.FNumber,3)='01.'
 and a.FQtyDecimal >0
 
 
+
+
+select a.FNumber as '物料长代码',a.FName as '名称',a.FModel as '规格',a.FHelpCode as '图号',
+m.FName as '计量单位',a.FAlias as '材质'
+from t_ICItem a
+LEFT JOIN t_MeasureUnit m on m.FItemID=a.FUnitID 
+where 1=1
+and (a.FNumber like '%'+@query+'%' or a.FName like '%'+@query+'%' or a.FModel like '%'+@query+'%' or a.FHelpCode like '%'+@query+'%')
+order by a.FNumber

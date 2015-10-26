@@ -10,6 +10,7 @@ BEGIN
 DECLARE @FInterID int
 SELECT @FInterID=FInterID FROM inserted
 
+
 UPDATE u1 set u1.FText=ISnull(u1.FText,'')+' 《转出单备注》：'+zc.FNOTE 
 FROM  ICShop_SubcIn v1 
 INNER JOIN ICShop_SubcInEntry u1 ON v1.FInterID=u1.FInterID
@@ -22,7 +23,6 @@ AND v1.FInterID=@FInterID
 AND zc.FNOTE is not null 
 AND zc.FNOTE <> '' 
 AND not(u1.FText like '%转出单备注%')
-
 
 
 --将检验申请单单价关联到接收单上面
@@ -56,9 +56,10 @@ select * from ICShop_SubcOut
 
 select * from rss.dbo.wwzc_wwjysqd order by FDate desc
 
-select FROM  ICShop_SubcIn v1 
+select FSubcOutNo,FSubcOutEntryID,o.FTranOutQty,o.FReceiptQty,* FROM  ICShop_SubcIn v1 
 INNER JOIN ICShop_SubcInEntry u1 ON v1.FInterID=u1.FInterID
-
+LEFT JOIN (SELECT v1.FBillNo,u1.FEntryID,u1.FTranOutQty,u1.FReceiptQty FROM  ICShop_SubcOut v1 INNER JOIN ICShop_SubcOutEntry u1 ON v1.FInterID=u1.FInterID group by v1.FBillNo,u1.FEntryID,u1.FTranOutQty,u1.FReceiptQty) o on u1.FSubcOutNo = o.FBillNo and u1.FSubcOutEntryID = o.FEntryID
+where o.FTranOutQty < o.FReceiptQty
 
 
 ----------刷新单价----------

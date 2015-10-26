@@ -32,3 +32,10 @@ update b set b.FBatchNo='14G16'
 from PPBOM a left join PPBOMEntry b ON a.FInterID = b.FInterID  AND b.FInterID<>0 where a.FICMOInterID=39327
 
 
+
+
+
+
+
+
+

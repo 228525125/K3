@@ -1,10 +1,11 @@
 --默认销售方式为：分期
+--DROP TRIGGER IC_XSDD_XSFS
 
 CREATE TRIGGER IC_XSDD_XSFS ON SEOrder
 After UPDATE
 AS
 SET NOCOUNT ON
-IF EXISTS(SELECT 1 FROM inserted)        --订单变更不进行判断
+IF EXISTS(SELECT 1 FROM inserted WHERE FStatus=1 and FChangeUser=0)        --订单变更不进行判断
 BEGIN
 DECLARE @FInterID int
 
